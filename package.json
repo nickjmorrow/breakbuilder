@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
-    "@nickjmorrow/react-component-library": "0.0.52",
+    "@nickjmorrow/react-component-library": "0.0.53",
     "calendar-base": "^0.3.0",
     "gatsby": "^2.18.8",
     "gatsby-image": "^2.2.34",
