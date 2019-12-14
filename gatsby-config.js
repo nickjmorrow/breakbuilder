@@ -1,8 +1,10 @@
+const path = require("path")
+
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Breakbuilder`,
+    description: `Optimize how you schedule vacation.`,
+    author: `Nicholas Morrow`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -30,5 +32,35 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
+    `gatsby-plugin-typescript`,
+    {
+      resolve: `gatsby-plugin-favicon`,
+      options: {
+        logo: "./assets/favicon.png",
+      },
+    },
+    {
+      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      options: {
+        fonts: [
+          {
+            family: "Overpass",
+            variants: [`400`, `600`, `700`, `800`],
+          },
+        ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-styled-components`,
+    },
+    {
+      resolve: `gatsby-plugin-root-import`,
+      options: {
+        src: path.join(__dirname, "src"),
+        components: path.join(__dirname, "src", "components"),
+        types: path.join(__dirname, "src", "types"),
+        utilities: path.join(__dirname, "src", "utilities"),
+      },
+    },
   ],
 }
