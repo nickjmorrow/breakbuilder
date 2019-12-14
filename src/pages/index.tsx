@@ -7,6 +7,7 @@ import {
 } from '@nickjmorrow/react-component-library';
 import React from 'react';
 import { Main } from 'components/Main';
+import 'components/reset.css';
 
 const themeInputs: ArgumentType<typeof updateThemeInputs>[0] = {
 	typography: {
@@ -20,7 +21,7 @@ const themeInputs: ArgumentType<typeof updateThemeInputs>[0] = {
 			saturation: 100,
 		},
 		accent: {
-			hue: 100,
+			hue: 55,
 		},
 	},
 	defaultShowBoxShadow: false,
