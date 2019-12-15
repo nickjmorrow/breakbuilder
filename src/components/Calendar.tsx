@@ -11,21 +11,24 @@ import { connect } from 'react-redux';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const CalendarInternal: React.FC = () => {
-	const [currentMonth, setCurrentMonth] = React.useState(6);
-	const days = getCalendarDates(2019, currentMonth);
+const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>> = ({
+	currentYear,
+	currentMonth,
+	setMonth,
+}) => {
+	const days = getCalendarDates(currentYear, currentMonth);
 	const theme = useThemeContext();
 	return (
 		<StyledCalendar theme={theme}>
-			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
 				<ChevronUpIcon
-					onClick={() => setCurrentMonth(current => Math.max(0, current - 1))}
+					onClick={() => setMonth(Math.max(0, currentMonth - 1))}
 					style={{ transform: 'rotate(-90deg)', cursor: 'pointer' }}
 				/>
 				<Typography sizeVariant={5}>{monthNames[currentMonth]}</Typography>
 				<ChevronUpIcon
 					style={{ transform: 'rotate(90deg)', cursor: 'pointer' }}
-					onClick={() => setCurrentMonth(current => Math.min(11, current + 1))}
+					onClick={() => setMonth(Math.min(11, currentMonth + 1))}
 				/>
 			</div>
 			<InnerCalendar theme={theme}>
@@ -45,7 +48,7 @@ const CalendarInternal: React.FC = () => {
 
 // redux
 const mapStateToProps = (state: AppState) => ({
-	currenntYear: state.ui.currentYear,
+	currentYear: state.ui.currentYear,
 	currentMonth: state.ui.currentMonth,
 });
 
@@ -66,6 +69,4 @@ const InnerCalendar = styled('div')<{ theme: Theme }>`
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	width: min-content;
-	width: 300px;
-	height: 300px;
 `;

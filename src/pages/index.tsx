@@ -21,7 +21,9 @@ const themeInputs: ArgumentType<typeof updateThemeInputs>[0] = {
 			saturation: 100,
 		},
 		accent: {
-			hue: 55,
+			hue: 50,
+			middleLightness: 47,
+			saturation: 90,
 		},
 	},
 	defaultShowBoxShadow: false,

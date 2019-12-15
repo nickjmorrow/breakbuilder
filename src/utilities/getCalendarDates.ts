@@ -40,15 +40,36 @@ export const getCalendarDates = (year: number, month: number): CalendarDate[] =>
 		return counter;
 	};
 
+	const toCalendarDate = (intermediateShape: IntermediateShape): CalendarDate => {
+		const newDate = new Date();
+		newDate.setDate(intermediateShape.day);
+		newDate.setMonth(intermediateShape.month);
+		newDate.setFullYear(intermediateShape.year);
+		return { ...intermediateShape, date: newDate };
+	};
+
 	const precedingDates = previousMonthDates
 		.slice(previousMonthDates.length - numPrecedingBufferDates(), previousMonthDates.length)
-		.filter(isCalendarDate);
+		.filter(isIntermediateShape)
+		.map(toCalendarDate);
 
-	const followingDates = nextMonthDates.slice(0, numFollowingBufferDates()).filter(isCalendarDate);
+	const followingDates = nextMonthDates
+		.filter(isIntermediateShape)
+		.slice(0, numFollowingBufferDates())
+		.map(toCalendarDate);
 
-	return [...precedingDates, ...days.filter(isCalendarDate), ...followingDates];
+	const monthDates = days.filter(isIntermediateShape).map(toCalendarDate);
+
+	return [...precedingDates, ...monthDates, ...followingDates];
 };
 
-function isCalendarDate(input: false | CalendarDate): input is CalendarDate {
+function isIntermediateShape(input: false | IntermediateShape): input is IntermediateShape {
 	return input !== false;
+}
+
+export interface IntermediateShape {
+	day: number;
+	weekDay: number;
+	month: number;
+	year: number;
 }

@@ -24,3 +24,4 @@ Optimize your vacation scheduling.
 -   How much vacation per month
 -   How much vacation per season
 -   How many "connected" dates and how many "selected" dates
+-   How many days until next vacation for each break

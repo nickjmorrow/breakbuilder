@@ -34,7 +34,12 @@ const YearSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & Retur
 					},
 				}}
 			/>
-			<Button style={{ marginTop: '300px' }} onClick={() => setYear(currentOption.value)}>
+			<Button
+				style={{ marginTop: '300px' }}
+				onClick={() => {
+					setYear(currentOption.value);
+				}}
+			>
 				Confirm
 			</Button>
 		</div>

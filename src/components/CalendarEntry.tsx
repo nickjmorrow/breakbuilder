@@ -1,30 +1,31 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Typography, useThemeContext, Theme, GetComponentProps, UIState } from '@nickjmorrow/react-component-library';
-import { CalendarDate as ICalendarDate, CalendarDate } from 'types/CalendarDate';
+import { Typography, useThemeContext, Theme, UIState } from '@nickjmorrow/react-component-library';
+import { CalendarDate } from 'types/CalendarDate';
 import { Dispatch } from 'redux';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { connect } from 'react-redux';
 import { AppState } from 'reduxUtilities/AppState';
-import { isCalendarDateEqual } from 'utilities/isCalendarDateEqual';
 import { isWeekend } from 'utilities/isWeekend';
+import { getDateType } from 'utilities/getDateType';
+import { DateType } from 'types/DateType';
 
 interface OwnProps {
-	calendarDate: ICalendarDate;
+	calendarDate: CalendarDate;
 }
 
 const CalendarEntryInternal: React.FC<OwnProps &
 	ReturnType<typeof mapStateToProps> &
-	ReturnType<typeof mapDispatchToProps>> = ({ calendarDate, toggleDate, isSelected, isInCurrentMonth }) => {
+	ReturnType<typeof mapDispatchToProps>> = ({ calendarDate, toggleDate, dateType, isInCurrentMonth }) => {
 	const theme = useThemeContext();
 	return (
 		<StyledCalendarEntry
-			isSelected={isSelected}
+			dateType={dateType}
 			calendarDate={calendarDate}
 			theme={theme}
-			onClick={() => isWeekend(calendarDate) && toggleDate(calendarDate)}
+			onClick={() => !isWeekend(calendarDate) && toggleDate(calendarDate)}
 		>
-			<StyledTypography isInCurrentMonth={isInCurrentMonth}>{calendarDate.day}</StyledTypography>
+			<StyledTypography isInCurrentMonth={isInCurrentMonth}>{calendarDate.date.getDate()}</StyledTypography>
 		</StyledCalendarEntry>
 	);
 };
@@ -34,57 +35,54 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps) => ({
-	isSelected: state.ui.selectedDates.some(sd => isCalendarDateEqual(sd, ownProps.calendarDate)),
-	isInCurrentMonth: state.ui.currentMonth === ownProps.calendarDate.month,
+	isInCurrentMonth: state.ui.currentMonth === ownProps.calendarDate.date.getMonth(),
+	dateType: getDateType(ownProps.calendarDate, state.ui.selectedDates, state.ui.connectedDates),
 });
 
 export const CalendarEntry = connect(mapStateToProps, mapDispatchToProps)(CalendarEntryInternal);
 
+// css
 const StyledTypography = styled(Typography)<{ isInCurrentMonth: boolean }>`
 	color: ${p => (p.isInCurrentMonth ? 'black' : 'gray')};
 `;
 
 const StyledCalendarEntry = styled('div')<{
 	theme: Theme;
-	isSelected: boolean;
+	dateType: DateType;
 	calendarDate: CalendarDate;
 }>`
-	width: 100%;
-	height: 100%;
+	width: 40px;
+	height: 40px;
+	margin: 4px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: ${p => p => (isWeekend(p.calendarDate) ? 'not-allowed' : 'pointer')};
 	transition: background-color ${p => p.theme.transitions.fast};
 	border-radius: ${p => p.theme.border.borderRadius.br1};
-	background-color: ${p => getBackgroundColor('normal', p.isSelected, p.calendarDate, p.theme)};
+	background-color: ${p => getBackgroundColor('normal', p.dateType, p.calendarDate, p.theme)};
 	&:hover {
-		background-color: ${p => getBackgroundColor('hover', p.isSelected, p.calendarDate, p.theme)};
+		background-color: ${p => getBackgroundColor('hover', p.dateType, p.calendarDate, p.theme)};
 		transition: background-color ${p => p.theme.transitions.fast};
 	}
 	&:focus {
-		background-color: ${p => getBackgroundColor('active', p.isSelected, p.calendarDate, p.theme)};
+		background-color: ${p => getBackgroundColor('active', p.dateType, p.calendarDate, p.theme)};
 		transition: background-color ${p => p.theme.transitions.fast};
 	}
 `;
 
-// css
-const getBorderBottomRadius = (currentMonth: number, calendarDate: CalendarDate, theme: Theme) => {
-	if (!isWeekend(calendarDate)) {
-		return theme.border.borderRadius.br1;
+const getBackgroundColor = (uiState: UIState, dateType: DateType, calendarDate: CalendarDate, theme: Theme) => {
+	if (dateType === 'connected') {
+		return theme.colors.accent.cs2;
 	}
-
-	if (calendarDate.month > currentMonth) {
-		return '0px';
+	if (dateType === 'holiday') {
+		return theme.colors.core.cs2;
 	}
-};
-
-const getBackgroundColor = (uiState: UIState, isSelected: boolean, calendarDate: CalendarDate, theme: Theme) => {
 	if (isWeekend(calendarDate)) {
 		return theme.colors.neutral.cs3;
 	}
 
-	if (uiState === 'active' || isSelected) {
+	if (uiState === 'active' || dateType === 'selected') {
 		return theme.colors.accent.cs5;
 	}
 
