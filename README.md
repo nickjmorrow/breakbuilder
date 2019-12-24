@@ -1,27 +1,15 @@
 # Breakbuilder
 
-Optimize your vacation scheduling.
+A webapp to automatically schedule your vacation to maximize the "spread" of your vacation throughout the year. There is no live demo yet.
 
-## Inspiration
+## Current State
 
-[Fitness Club Statics App](https://dribbble.com/shots/5966595-Fitness-Club-Statistics-App)
+Still in development.
 
-[Booking App](https://dribbble.com/shots/6479938-Booking-App-The-concept-with-booking-feature)
+## Technical Stack
 
-[Booking flight](https://dribbble.com/shots/5401352-Booking-flight-with-active-interface)
+Gatsby, TypeScript.
 
-## Algorithm
+## Expectations
 
--   Allow user to select dates they intend on taking vacation.
--   From this, highlight "connected" dates where the vacation intersects with a weekend
-
-## Inputs
-
--   Be able to "weight" by month or season
-
-## Insights
-
--   How much vacation per month
--   How much vacation per season
--   How many "connected" dates and how many "selected" dates
--   How many days until next vacation for each break
+This will just stay a hobby project that I work on now and again.

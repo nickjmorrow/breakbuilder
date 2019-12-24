@@ -38,6 +38,7 @@ const YearSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & Retur
 				style={{ marginTop: '300px' }}
 				onClick={() => {
 					setYear(currentOption.value);
+					// TODO: Scroll to next screen.
 				}}
 			>
 				Confirm
