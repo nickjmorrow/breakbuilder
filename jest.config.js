@@ -1,3 +1,6 @@
+const tsconfig = require('./tsconfig.json');
+const jestMapper = require('tsconfig-paths-jest')(tsconfig);
+
 module.exports = {
 	transform: {
 		'^.+\\.[jt]sx?$': '<rootDir>/jest-preprocess.js',
@@ -12,5 +15,4 @@ module.exports = {
 		__PATH_PREFIX__: ``,
 	},
 	testURL: `http://localhost`,
-	setupFiles: [`<rootDir>/loadershim.js`],
 };

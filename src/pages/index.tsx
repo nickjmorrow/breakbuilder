@@ -1,9 +1,8 @@
 import {
 	ArgumentType,
 	getThemeFromNewInputs,
-	ThemeContext,
 	updateThemeInputs,
-	useThemeContext,
+	ThemeContext,
 } from '@nickjmorrow/react-component-library';
 import React from 'react';
 import { Main } from 'components/Main';
@@ -30,7 +29,6 @@ const themeInputs: ArgumentType<typeof updateThemeInputs>[0] = {
 };
 
 const IndexPage: React.FC = () => {
-	const theme = useThemeContext();
 	return (
 		<ThemeContext.Provider value={getThemeFromNewInputs(themeInputs)}>
 			<Main />
