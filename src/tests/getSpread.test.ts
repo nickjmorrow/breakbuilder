@@ -8,3 +8,5 @@ describe('getSpread', () => {
 		expect([false, true, false, true, false]).toBe(1);
 	});
 });
+
+[]
