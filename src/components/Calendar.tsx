@@ -20,7 +20,9 @@ const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnT
 	const theme = useThemeContext();
 	return (
 		<StyledCalendar theme={theme}>
-			<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+			<div
+				style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}
+			>
 				<ChevronUpIcon
 					onClick={() => setMonth(Math.max(0, currentMonth - 1))}
 					style={{ transform: 'rotate(-90deg)', cursor: 'pointer' }}

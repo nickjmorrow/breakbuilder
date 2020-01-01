@@ -16,13 +16,25 @@ const monthSeasonMapping: { [k in Season]: Month[] } = {
 
 type Season = 'Spring' | 'Summer' | 'Fall' | 'Winter';
 
-const SeasonalWeightingInternal: React.FC<{style?: React.CSSProperties} & ReturnType<typeof mapStateToProps>> = ({ connectedDates, selectedDates, style }) => {
+const SeasonalWeightingInternal: React.FC<{ style?: React.CSSProperties } & ReturnType<typeof mapStateToProps>> = ({
+	connectedDates,
+	selectedDates,
+	style,
+}) => {
 	const seasons: Season[] = ['Spring', 'Summer', 'Fall', 'Winter'];
 	const calendarDates = [...connectedDates, ...selectedDates];
 	return (
 		<div style={{ display: 'flex', flexDirection: 'row', ...style }}>
 			{seasons.map(s => (
-				<div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+				<div
+					style={{
+						width: '100%',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						flexDirection: 'column',
+					}}
+				>
 					<div>
 						<Typography colorVariant={'primaryLight'}>{s}</Typography>
 					</div>

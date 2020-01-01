@@ -61,8 +61,8 @@
     "deploy": "npm install -g gatsby && npm install && npm run serve",
     "serve": "NODE_ENV=production gatsby serve",
     "test": "jest",
-    "format": "prettier --write \"src/**/*.{js,ts,tsx}\"",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix"
   },
   "repository": {
     "type": "git",
