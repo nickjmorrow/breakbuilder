@@ -1,4 +1,10 @@
 const path = require('path');
+const { readdirSync } = require('fs');
+
+const getDirectories = source =>
+	readdirSync(source, { withFileTypes: true })
+		.filter(dirent => dirent.isDirectory())
+		.map(dirent => dirent.name);
 
 module.exports = {
 	siteMetadata: {
@@ -56,11 +62,10 @@ module.exports = {
 		{
 			resolve: `gatsby-plugin-root-import`,
 			options: {
-				src: path.join(__dirname, 'src'),
-				components: path.join(__dirname, 'src', 'components'),
-				types: path.join(__dirname, 'src', 'types'),
-				utilities: path.join(__dirname, 'src', 'utilities'),
-				reduxUtilities: path.join(__dirname, 'src', 'reduxUtilities'),
+				...getDirectories('src').reduce((agg, cur) => {
+					agg[cur] = path.join(__dirname, 'src', cur);
+					return agg;
+				}, {}),
 			},
 		},
 	],
