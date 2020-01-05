@@ -9,8 +9,6 @@ describe('getSpread', () => {
 	});
 
 	it('handles 01001', () => {
-		expect(getSpread([false, true, false, false, true])).toBbe(3.5);
+		expect(getSpread([false, true, false, false, true])).toBe(1.75);
 	});
 });
-
-[];
