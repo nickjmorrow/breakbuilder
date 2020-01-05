@@ -11,7 +11,7 @@ export const getSpread = (distribution: boolean[]): number => {
 
 	lastSeenIndex = 0;
 
-	distribution.reverse().forEach((value, index) => {
+	[...distribution].reverse().forEach((value, index) => {
 		if (value) {
 			lastSeenFromLeft.push(index - lastSeenIndex);
 			lastSeenIndex = index;
