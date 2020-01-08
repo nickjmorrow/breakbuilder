@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getCalendarDates } from 'utilities/getCalendarDates';
+import { getCalendarDatesForMonth } from 'utilities/getCalendarDatesForMonth';
 import { CalendarEntry } from 'components/CalendarEntry';
 import styled from 'styled-components';
 import { useThemeContext, Typography, ChevronUpIcon } from '@nickjmorrow/react-component-library';
@@ -14,9 +14,9 @@ const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
 const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>> = ({
 	currentYear,
 	currentMonth,
+	calendarDates,
 	setMonth,
 }) => {
-	const days = getCalendarDates(currentYear, currentMonth);
 	const theme = useThemeContext();
 	return (
 		<StyledCalendar theme={theme}>
@@ -40,9 +40,11 @@ const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnT
 					</div>
 				))}
 
-				{days.map(d => (
-					<CalendarEntry calendarDate={d} />
-				))}
+				{calendarDates
+					.filter(cd => cd.date.getMonth() === currentMonth)
+					.map(d => (
+						<CalendarEntry calendarDate={d} />
+					))}
 			</InnerCalendar>
 		</StyledCalendar>
 	);
@@ -52,6 +54,7 @@ const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnT
 const mapStateToProps = (state: AppState) => ({
 	currentYear: state.ui.currentYear,
 	currentMonth: state.ui.currentMonth,
+	calendarDates: state.ui.calendarDates,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

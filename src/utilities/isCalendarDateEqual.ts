@@ -1,6 +1,8 @@
-import { CalendarDate } from 'types/CalendarDate';
+interface WrappedDate {
+	date: Date;
+}
 
-export const isCalendarDateEqual = (firstDate: CalendarDate, secondDate: CalendarDate) => {
+export const isCalendarDateEqual = (firstDate: WrappedDate, secondDate: WrappedDate) => {
 	return (
 		firstDate.date.getDate() === secondDate.date.getDate() &&
 		firstDate.date.getMonth() === secondDate.date.getMonth() &&

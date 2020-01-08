@@ -1,6 +1,5 @@
-import { CalendarDate } from 'types/CalendarDate';
+import { EmptyDate } from 'types/EmptyDate';
 
-export interface SuggestedDate {
+export interface SuggestedDate extends EmptyDate {
 	type: 'suggested';
-	date: CalendarDate;
 }

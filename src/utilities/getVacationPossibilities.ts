@@ -1,4 +1,5 @@
 import { assignVacationToSegment } from 'utilities/assignVacationToSegment';
+import { centerVacation } from 'utilities/centerVacation';
 
 export const getNumVacation = (segment: boolean[]) => {
 	return segment.reduce((agg, cur) => {
@@ -27,7 +28,7 @@ export const getVacationPossibilities = (segment: boolean[], numDates: number): 
 	const helper = (segment: boolean[]): void => {
 		const alreadyAssigned = getAssigned(segment);
 		if (alreadyAssigned === numDates) {
-			possibilities.push(segment);
+			possibilities.push(centerVacation(segment));
 			return;
 		}
 		const leftToAssign = numDates - alreadyAssigned;

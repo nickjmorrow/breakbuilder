@@ -8,7 +8,7 @@ describe('assign vacation to segment', () => {
 	});
 
 	it('handles 000, 2', () => {
-		expect(assignVacationToSegment(getInput(3), 2)).toEqual([true, true, false]);
+		expect(assignVacationToSegment(getInput(3), 2)).toEqual([true, false, true]);
 	});
 
 	it('handles 000, 3', () => {
@@ -16,29 +16,29 @@ describe('assign vacation to segment', () => {
 	});
 
 	it('handles 00000, 2', () => {
-		expect(assignVacationToSegment(getInput(5), 2)).toEqual([false, true, false, true, false]);
+		expect(assignVacationToSegment(getInput(5), 2)).toEqual([true, false, false, false, true]);
 	});
 
 	it('handles 00000, 3', () => {
-		expect(assignVacationToSegment(getInput(5), 3)).toEqual([false, true, false, true, true]);
+		expect(assignVacationToSegment(getInput(5), 3)).toEqual([true, false, true, false, true]);
 	});
 
 	it('handles 00000, 4', () => {
-		expect(assignVacationToSegment(getInput(5), 4)).toEqual([true, true, true, true, false]);
+		expect(assignVacationToSegment(getInput(5), 4)).toEqual([true, true, true, false, true]);
 	});
 
 	it('handles 0000000000, 3', () => {
 		expect(assignVacationToSegment(getInput(10), 3)).toEqual([
+			true,
+			false,
+			false,
 			false,
 			false,
 			true,
 			false,
 			false,
-			true,
-			false,
 			false,
 			true,
-			false,
 		]);
 	});
 

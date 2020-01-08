@@ -1,5 +1,5 @@
-import { CalendarDate } from 'types/CalendarDate';
+import { EmptyDate } from 'types/EmptyDate';
 
-export interface SelectedDate extends CalendarDate {
+export interface SelectedDate extends EmptyDate {
 	type: 'selected';
 }

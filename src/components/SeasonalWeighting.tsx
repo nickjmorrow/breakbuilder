@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'reduxUtilities/AppState';
-import { CalendarDate } from 'types/CalendarDate';
+import { EmptyDate } from 'types/EmptyDate';
 import { Typography } from '@nickjmorrow/react-component-library';
 
 type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
@@ -55,7 +55,7 @@ const SeasonalWeightingInternal: React.FC<{ style?: React.CSSProperties } & Retu
 	);
 };
 
-const getNumDatesInSeason = (calendarDates: CalendarDate[], season: Season): number => {
+const getNumDatesInSeason = (calendarDates: EmptyDate[], season: Season): number => {
 	const months = monthSeasonMapping[season];
 	return calendarDates.filter(cd => months.some(m => m === cd.date.getMonth())).length;
 };

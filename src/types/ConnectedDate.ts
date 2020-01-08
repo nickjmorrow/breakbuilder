@@ -1,5 +1,5 @@
-import { CalendarDate } from 'types/CalendarDate';
+import { EmptyDate } from 'types/EmptyDate';
 
-export interface ConnectedDate extends CalendarDate {
+export interface ConnectedDate extends EmptyDate {
 	type: 'connected';
 }
