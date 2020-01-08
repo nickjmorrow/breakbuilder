@@ -40,7 +40,7 @@ export const getVacationPossibilities = (segment: boolean[], numDates: number): 
 			if (i > segmentToAssign.length) {
 				continue;
 			}
-			// TODO: cannot assume false[] if there is pre-existing vacation
+
 			const assignedSegment = assignVacationToSegment(segmentToAssign as false[], i);
 			const newSegment = [
 				...segment.slice(0, lastAssignment === -1 ? 0 : lastAssignment + 1),

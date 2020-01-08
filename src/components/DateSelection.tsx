@@ -53,5 +53,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 	getSuggestedDates: () => dispatch(uiActions.getSuggestedDates()),
 });
 
-// TODO: Look into react-redux hooks that replace connect HOC.
 export const DateSelection = connect(null, mapDispatchToProps)(DateSelectionInternal);
