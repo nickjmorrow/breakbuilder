@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Typography } from '@nickjmorrow/react-component-library';
 import { AppState } from 'reduxUtilities/AppState';
 import { SeasonalWeighting } from 'components/SeasonalWeighting';
+import { isConnectedDate } from 'typeGuards/isConnectedDate';
+import { isSelectedDate } from 'typeGuards/isSelectedDate';
 
 const AnalyticsInternal: React.FC<ReturnType<typeof mapStateToProps>> = ({ selectedDates, connectedDates }) => {
 	return (
@@ -27,8 +29,8 @@ const AnalyticsInternal: React.FC<ReturnType<typeof mapStateToProps>> = ({ selec
 };
 
 const mapStateToProps = (state: AppState) => ({
-	selectedDates: state.ui.selectedDates,
-	connectedDates: state.ui.connectedDates,
+	selectedDates: state.ui.calendarDates.filter(isSelectedDate),
+	connectedDates: state.ui.calendarDates.filter(isConnectedDate),
 });
 
 export const Analytics = connect(mapStateToProps, null)(AnalyticsInternal);

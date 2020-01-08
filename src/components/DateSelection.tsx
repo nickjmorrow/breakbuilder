@@ -2,8 +2,11 @@ import * as React from 'react';
 import { Calendar } from 'components/Calendar';
 import { ChevronUpIcon, TextInput, Button, Typography } from '@nickjmorrow/react-component-library';
 import { Analytics } from 'components/Analytics';
+import { Dispatch } from 'redux';
+import { uiActions } from 'reduxUtilities/uiActions';
+import { connect } from 'react-redux';
 
-export const DateSelection: React.FC = () => {
+const DateSelectionInternal: React.FC<ReturnType<typeof mapDispatchToProps>> = ({ getSuggestedDates }) => {
 	const [availableDates, setAvailableDates] = React.useState('');
 
 	return (
@@ -38,10 +41,17 @@ export const DateSelection: React.FC = () => {
 					onChange={e => setAvailableDates(e.currentTarget.value)}
 				/>
 
-				<Button colorVariant={'accent'} style={{ margin: '16px 0' }}>
+				<Button onClick={() => getSuggestedDates()} colorVariant={'accent'} style={{ margin: '16px 0' }}>
 					Calculate
 				</Button>
 			</div>
 		</div>
 	);
 };
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	getSuggestedDates: () => dispatch(uiActions.getSuggestedDates()),
+});
+
+// TODO: Look into react-redux hooks that replace connect HOC.
+export const DateSelection = connect(null, mapDispatchToProps)(DateSelectionInternal);

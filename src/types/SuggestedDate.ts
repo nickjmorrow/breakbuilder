@@ -1,5 +1,5 @@
-import { EmptyDate } from 'types/EmptyDate';
+import { WrappedDate } from 'types/WrappedDate';
 
-export interface SuggestedDate extends EmptyDate {
+export interface SuggestedDate extends WrappedDate {
 	type: 'suggested';
 }

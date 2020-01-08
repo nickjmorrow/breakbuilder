@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { AppState } from 'reduxUtilities/AppState';
 import { EmptyDate } from 'types/EmptyDate';
 import { Typography } from '@nickjmorrow/react-component-library';
+import { isConnectedDate } from 'typeGuards/isConnectedDate';
+import { isSelectedDate } from 'typeGuards/isSelectedDate';
 
 type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -61,8 +63,8 @@ const getNumDatesInSeason = (calendarDates: EmptyDate[], season: Season): number
 };
 
 const mapStateToProps = (state: AppState) => ({
-	selectedDates: state.ui.selectedDates,
-	connectedDates: state.ui.connectedDates,
+	selectedDates: state.ui.calendarDates.filter(isSelectedDate),
+	connectedDates: state.ui.calendarDates.filter(isConnectedDate),
 });
 
 export const SeasonalWeighting = connect(mapStateToProps, null)(SeasonalWeightingInternal);

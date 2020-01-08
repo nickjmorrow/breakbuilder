@@ -8,6 +8,7 @@ export enum UiActionKeys {
 	TOGGLE_DATE = 'TOGGLE_DATE',
 	SET_YEAR = 'SET_YEAR',
 	SET_MONTH = 'SET_MONTH',
+	GET_SUGGESTED_DATES = 'GET_SUGGESTED_DATES',
 }
 
 const addDate = (date: EmptyDate) => action(UiActionKeys.ADD_DATE, date);
@@ -20,10 +21,13 @@ const setYear = (year: number) => action(UiActionKeys.SET_YEAR, year);
 
 const setMonth = (month: number) => action(UiActionKeys.SET_MONTH, month);
 
+const getSuggestedDates = () => action(UiActionKeys.GET_SUGGESTED_DATES);
+
 export const uiActions = {
 	addDate,
 	removeDate,
 	toggleDate,
 	setYear,
 	setMonth,
+	getSuggestedDates,
 };

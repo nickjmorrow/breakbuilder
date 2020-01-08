@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { getCalendarDatesForMonth } from 'utilities/getCalendarDatesForMonth';
-import { CalendarEntry } from 'components/CalendarEntry';
 import styled from 'styled-components';
+import { Dispatch } from 'redux';
 import { useThemeContext, Typography, ChevronUpIcon } from '@nickjmorrow/react-component-library';
 import { Theme } from '@nickjmorrow/react-component-library/dist/typeUtilities';
 import { AppState } from 'reduxUtilities/AppState';
-import { Dispatch } from 'redux';
 import { uiActions } from 'reduxUtilities/uiActions';
+import { CalendarEntry } from 'components/CalendarEntry';
+
 import { connect } from 'react-redux';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>> = ({
-	currentYear,
 	currentMonth,
 	calendarDates,
 	setMonth,
@@ -52,7 +51,6 @@ const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnT
 
 // redux
 const mapStateToProps = (state: AppState) => ({
-	currentYear: state.ui.currentYear,
 	currentMonth: state.ui.currentMonth,
 	calendarDates: state.ui.calendarDates,
 });
