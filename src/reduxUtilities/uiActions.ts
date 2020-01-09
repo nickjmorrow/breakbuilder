@@ -10,6 +10,7 @@ export enum UiActionKeys {
 	SET_YEAR = 'SET_YEAR',
 	SET_MONTH = 'SET_MONTH',
 	GET_SUGGESTED_DATES = 'GET_SUGGESTED_DATES',
+	SET_NUM_VACATION_DATES = 'SET_NUM_VACATION_DATES',
 }
 
 const addDate = (date: EmptyDate) => action(UiActionKeys.ADD_DATE, date);
@@ -24,6 +25,8 @@ const setMonth = (month: number) => action(UiActionKeys.SET_MONTH, month);
 
 const getSuggestedDates = () => action(UiActionKeys.GET_SUGGESTED_DATES);
 
+const setNumVacationDates = (numVacationDates: number) => action(UiActionKeys.SET_NUM_VACATION_DATES, numVacationDates);
+
 export const uiActions = {
 	addDate,
 	removeDate,
@@ -31,4 +34,5 @@ export const uiActions = {
 	setYear,
 	setMonth,
 	getSuggestedDates,
+	setNumVacationDates,
 };

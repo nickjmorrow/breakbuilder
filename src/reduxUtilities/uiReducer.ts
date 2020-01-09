@@ -19,7 +19,7 @@ const initialState = {
 	calendarDates: getCalendarDatesForYear(currentYear),
 	currentMonth: 0,
 	currentYear,
-	numVacationDays: 10,
+	numVacationDates: 10,
 };
 
 export const uiReducer = (state: UiState = initialState, action: ActionType<typeof uiActions>) => {
@@ -80,8 +80,12 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 		case UiActionKeys.GET_SUGGESTED_DATES:
 			return produce(state, draftState => {
 				draftState.calendarDates = getUpdatedConnectedDates(
-					getUpdatedDates(draftState.calendarDates, draftState.numVacationDays),
+					getUpdatedDates(draftState.calendarDates, draftState.numVacationDates),
 				);
+			});
+		case UiActionKeys.SET_NUM_VACATION_DATES:
+			return produce(state, draftState => {
+				draftState.numVacationDates = action.payload;
 			});
 		default:
 			return state;

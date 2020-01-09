@@ -6,15 +6,19 @@ import { WrappedDate } from 'types/WrappedDate';
 import { getEmptyDate } from 'dateTypeProviders/getEmptyDate';
 import { isCalendarDateEqual } from 'utilities/isCalendarDateEqual';
 import { isSelectedDate } from 'typeGuards/isSelectedDate';
+import { isVacationDate } from 'typeGuards/isVacationDate';
 
 export const getUpdatedConnectedDates = (dates: CalendarDate[]): CalendarDate[] => {
+	const inputDates = dates.map(d => (isConnectedDate(d) ? getEmptyDate(d) : d));
 	const connectedDates: ConnectedDate[] = [];
+
 	const alreadyExists = (newDate: WrappedDate) => connectedDates.some(cd => isCalendarDateEqual(cd, newDate));
 	const asConnectedDate = (calendarDate: WrappedDate): ConnectedDate => ({ ...calendarDate, type: 'connected' });
 	const addIfNotExists = (newDate: WrappedDate) =>
 		!alreadyExists(newDate) && connectedDates.push(asConnectedDate(newDate));
-	dates
-		.filter(d => isSelectedDate(d))
+
+	inputDates
+		.filter(d => isVacationDate(d))
 		.forEach(d => {
 			if (d.date.getDay() === 5) {
 				addIfNotExists({ date: getOffsetDate(d.date, 1) });
@@ -41,7 +45,7 @@ export const getUpdatedConnectedDates = (dates: CalendarDate[]): CalendarDate[] 
 		return date;
 	};
 
-	return dates.map(convertDate);
+	return inputDates.map(convertDate);
 };
 
 const getOffsetDate = (date: Date, offset: number) => {

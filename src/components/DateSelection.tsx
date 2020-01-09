@@ -5,10 +5,13 @@ import { Analytics } from 'components/Analytics';
 import { Dispatch } from 'redux';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { connect } from 'react-redux';
+import { AppState } from 'reduxUtilities/AppState';
 
-const DateSelectionInternal: React.FC<ReturnType<typeof mapDispatchToProps>> = ({ getSuggestedDates }) => {
-	const [availableDates, setAvailableDates] = React.useState('');
-
+const DateSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>> = ({
+	getSuggestedDates,
+	numVacationDates,
+	setNumVacationDates,
+}) => {
 	return (
 		<div style={{ minHeight: '100vh' }}>
 			<div style={{ height: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -35,10 +38,10 @@ const DateSelectionInternal: React.FC<ReturnType<typeof mapDispatchToProps>> = (
 				</Typography>
 				<TextInput
 					placeholder={'Total Available Dates'}
-					value={parseInt(availableDates, 10)}
+					value={numVacationDates}
 					type={'number'}
 					style={{ marginTop: '16px' }}
-					onChange={e => setAvailableDates(e.currentTarget.value)}
+					onChange={e => setNumVacationDates(parseInt(e.currentTarget.value, 10))}
 				/>
 
 				<Button onClick={() => getSuggestedDates()} colorVariant={'accent'} style={{ margin: '16px 0' }}>
@@ -49,8 +52,13 @@ const DateSelectionInternal: React.FC<ReturnType<typeof mapDispatchToProps>> = (
 	);
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	getSuggestedDates: () => dispatch(uiActions.getSuggestedDates()),
+const mapStateToProps = (state: AppState) => ({
+	numVacationDates: state.ui.numVacationDates,
 });
 
-export const DateSelection = connect(null, mapDispatchToProps)(DateSelectionInternal);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	getSuggestedDates: () => dispatch(uiActions.getSuggestedDates()),
+	setNumVacationDates: (numVacationDates: number) => dispatch(uiActions.setNumVacationDates(numVacationDates)),
+});
+
+export const DateSelection = connect(mapStateToProps, mapDispatchToProps)(DateSelectionInternal);
