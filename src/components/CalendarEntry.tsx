@@ -10,9 +10,11 @@ import { isWeekend } from 'utilities/isWeekend';
 import { CalendarDate } from 'types/CalendarDate';
 import { SelectedDate } from 'types/SelectedDate';
 import { isSelectedDate } from 'typeGuards/isSelectedDate';
+import { isSuggestedDate } from 'typeGuards/isSuggestedDate';
 import { isEmptyDate } from 'typeGuards/isEmptyDate';
 import { isConnectedDate } from 'typeGuards/isConnectedDate';
 import { isHolidayDate } from 'typeGuards/isHolidayDate';
+import { SuggestedDate } from 'types/SuggestedDate';
 
 interface OwnProps {
 	calendarDate: CalendarDate;
@@ -27,7 +29,7 @@ const CalendarEntryInternal: React.FC<OwnProps &
 			calendarDate={calendarDate}
 			theme={theme}
 			onClick={() => {
-				if (isSelectedDate(calendarDate) || isEmptyDate(calendarDate)) {
+				if (isSelectedDate(calendarDate) || isEmptyDate(calendarDate) || isSuggestedDate(calendarDate)) {
 					toggleDate(calendarDate);
 				}
 			}}
@@ -38,7 +40,8 @@ const CalendarEntryInternal: React.FC<OwnProps &
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	toggleDate: (calendarDate: EmptyDate | SelectedDate) => dispatch(uiActions.toggleDate(calendarDate)),
+	toggleDate: (calendarDate: EmptyDate | SelectedDate | SuggestedDate) =>
+		dispatch(uiActions.toggleDate(calendarDate)),
 });
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps) => ({
@@ -85,6 +88,9 @@ const getBackgroundColor = (uiState: UIState, calendarDate: CalendarDate, theme:
 	}
 	if (isWeekend(calendarDate)) {
 		return theme.colors.neutral.cs3;
+	}
+	if (isSuggestedDate(calendarDate)) {
+		return theme.colors.accent.cs7;
 	}
 
 	if (uiState === 'active' || isSelectedDate(calendarDate)) {

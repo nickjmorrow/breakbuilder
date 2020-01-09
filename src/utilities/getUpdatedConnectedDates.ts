@@ -3,6 +3,9 @@ import { isConnectedDate } from 'typeGuards/isConnectedDate';
 import { CalendarDate } from 'types/CalendarDate';
 import { ConnectedDate } from 'types/ConnectedDate';
 import { WrappedDate } from 'types/WrappedDate';
+import { getEmptyDate } from 'dateTypeProviders/getEmptyDate';
+import { isCalendarDateEqual } from 'utilities/isCalendarDateEqual';
+import { isSelectedDate } from 'typeGuards/isSelectedDate';
 
 export const getUpdatedConnectedDates = (dates: CalendarDate[]): CalendarDate[] => {
 	const connectedDates: ConnectedDate[] = [];

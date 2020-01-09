@@ -1,6 +1,7 @@
 import { action } from 'typesafe-actions';
 import { EmptyDate } from 'types/EmptyDate';
 import { SelectedDate } from 'types/SelectedDate';
+import { SuggestedDate } from 'types/SuggestedDate';
 
 export enum UiActionKeys {
 	ADD_DATE = 'ADD_DATE',
@@ -15,7 +16,7 @@ const addDate = (date: EmptyDate) => action(UiActionKeys.ADD_DATE, date);
 
 const removeDate = (date: SelectedDate) => action(UiActionKeys.REMOVE_DATE, date);
 
-const toggleDate = (date: EmptyDate | SelectedDate) => action(UiActionKeys.TOGGLE_DATE, date);
+const toggleDate = (date: EmptyDate | SelectedDate | SuggestedDate) => action(UiActionKeys.TOGGLE_DATE, date);
 
 const setYear = (year: number) => action(UiActionKeys.SET_YEAR, year);
 

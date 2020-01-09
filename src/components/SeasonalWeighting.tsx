@@ -6,6 +6,8 @@ import { EmptyDate } from 'types/EmptyDate';
 import { Typography } from '@nickjmorrow/react-component-library';
 import { isConnectedDate } from 'typeGuards/isConnectedDate';
 import { isSelectedDate } from 'typeGuards/isSelectedDate';
+import { CalendarDate } from 'types/CalendarDate';
+import { isVacationDate } from 'typeGuards/isVacationDate';
 
 type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -19,12 +21,10 @@ const monthSeasonMapping: { [k in Season]: Month[] } = {
 type Season = 'Spring' | 'Summer' | 'Fall' | 'Winter';
 
 const SeasonalWeightingInternal: React.FC<{ style?: React.CSSProperties } & ReturnType<typeof mapStateToProps>> = ({
-	connectedDates,
-	selectedDates,
+	calendarDates,
 	style,
 }) => {
 	const seasons: Season[] = ['Spring', 'Summer', 'Fall', 'Winter'];
-	const calendarDates = [...connectedDates, ...selectedDates];
 	return (
 		<div style={{ display: 'flex', flexDirection: 'row', ...style }}>
 			{seasons.map(s => (
@@ -57,14 +57,13 @@ const SeasonalWeightingInternal: React.FC<{ style?: React.CSSProperties } & Retu
 	);
 };
 
-const getNumDatesInSeason = (calendarDates: EmptyDate[], season: Season): number => {
+const getNumDatesInSeason = (calendarDates: CalendarDate[], season: Season): number => {
 	const months = monthSeasonMapping[season];
-	return calendarDates.filter(cd => months.some(m => m === cd.date.getMonth())).length;
+	return calendarDates.filter(cd => months.some(m => m === cd.date.getMonth() && isVacationDate(cd))).length;
 };
 
 const mapStateToProps = (state: AppState) => ({
-	selectedDates: state.ui.calendarDates.filter(isSelectedDate),
-	connectedDates: state.ui.calendarDates.filter(isConnectedDate),
+	calendarDates: state.ui.calendarDates,
 });
 
 export const SeasonalWeighting = connect(mapStateToProps, null)(SeasonalWeightingInternal);

@@ -5,6 +5,7 @@ import { getSuggestedDate } from 'dateTypeProviders/getSuggestedDate';
 
 export const getUpdatedDates = (dates: CalendarDate[], numVacationDays: number): CalendarDate[] => {
 	const convertedEntries = dates.map(isVacationDate);
+	console.log({ convertedEntries, numVacationDays });
 	const addedEntries = getAddedEntriesForMostEvenSelection(convertedEntries, numVacationDays);
 	return dates.map((d, i) => {
 		return addedEntries[i] ? getSuggestedDate(d) : d;
