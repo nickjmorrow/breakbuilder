@@ -1,6 +1,7 @@
 import { Calendar as CalendarUtil } from 'calendar-base';
 import { EmptyDate } from 'types/EmptyDate';
 
+// TODO: Move logic for buffering month.
 export const getCalendarDatesForMonth = (year: number, month: number): EmptyDate[] => {
 	const calendarUtil = new CalendarUtil();
 	const previousMonthDates = (month === 0

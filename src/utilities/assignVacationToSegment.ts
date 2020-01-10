@@ -1,7 +1,7 @@
 import { Throw } from 'utilities/Throw';
 import { centerVacation } from 'utilities/centerVacation';
 
-export const assignVacationToSegment = (segment: false[], numDates: number): boolean[] => {
+export const addEntriesToSelection = (segment: false[], numDates: number): boolean[] => {
 	Throw.InvalidIf(segment.length === 0, 'Segment must not be empty.');
 	Throw.InvalidIf(
 		numDates > segment.length,

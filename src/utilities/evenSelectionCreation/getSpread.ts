@@ -1,4 +1,4 @@
-import { getGaps } from 'utilities/getGaps';
+import { getGaps } from 'utilities/evenSelectionCreation/getGaps';
 
 export const getSpread = (distribution: boolean[]): number => {
 	return 1 / getStdDev(getGaps(distribution));

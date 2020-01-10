@@ -6,7 +6,7 @@ import { Dispatch } from 'redux';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { connect } from 'react-redux';
 import { AppState } from 'reduxUtilities/AppState';
-import { isWeekend } from 'utilities/isWeekend';
+import { isWeekend } from 'utilities/dateUtilities/isWeekend';
 import { CalendarDate } from 'types/CalendarDate';
 import { SelectedDate } from 'types/SelectedDate';
 import { isSelectedDate } from 'typeGuards/isSelectedDate';
@@ -15,6 +15,7 @@ import { isEmptyDate } from 'typeGuards/isEmptyDate';
 import { isConnectedDate } from 'typeGuards/isConnectedDate';
 import { isHolidayDate } from 'typeGuards/isHolidayDate';
 import { SuggestedDate } from 'types/SuggestedDate';
+import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 
 interface OwnProps {
 	calendarDate: CalendarDate;
@@ -22,14 +23,23 @@ interface OwnProps {
 
 const CalendarEntryInternal: React.FC<OwnProps &
 	ReturnType<typeof mapStateToProps> &
-	ReturnType<typeof mapDispatchToProps>> = ({ calendarDate, toggleDate, isInCurrentMonth }) => {
+	ReturnType<typeof mapDispatchToProps>> = ({
+	calendarDate,
+	toggleDate,
+	isInCurrentMonth,
+	numVacationDatesRemaining,
+}) => {
 	const theme = useThemeContext();
 	return (
 		<StyledCalendarEntry
 			calendarDate={calendarDate}
 			theme={theme}
 			onClick={() => {
-				if (isSelectedDate(calendarDate) || isEmptyDate(calendarDate) || isSuggestedDate(calendarDate)) {
+				if (
+					isSelectedDate(calendarDate) ||
+					(isEmptyDate(calendarDate) && numVacationDatesRemaining > 0) ||
+					isSuggestedDate(calendarDate)
+				) {
 					toggleDate(calendarDate);
 				}
 			}}
@@ -46,6 +56,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps) => ({
 	isInCurrentMonth: state.ui.currentMonth === ownProps.calendarDate.date.getMonth(),
+	numVacationDatesRemaining: numRemainingVacationDatesSelector(state),
 });
 
 export const CalendarEntry = connect(mapStateToProps, mapDispatchToProps)(CalendarEntryInternal);

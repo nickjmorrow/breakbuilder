@@ -1,4 +1,4 @@
-import { assignVacationToSegment } from 'utilities/assignVacationToSegment';
+import { addEntriesToSelection } from 'utilities/assignVacationToSegment';
 import { centerVacation } from 'utilities/centerVacation';
 
 export const getNumVacation = (segment: boolean[]) => {
@@ -19,7 +19,7 @@ const getLastAssignment = (segment: boolean[]): number => {
 	return -1; // this may not be right
 };
 
-export const getVacationPossibilities = (segment: boolean[], numDates: number): boolean[][] => {
+export const getSelectionPossibilities = (segment: boolean[], numAdditionalEntries: number): boolean[][] => {
 	const possibilities: boolean[][] = [];
 	const numVacationOriginal = getNumVacation(segment);
 
@@ -27,11 +27,11 @@ export const getVacationPossibilities = (segment: boolean[], numDates: number): 
 
 	const helper = (segment: boolean[]): void => {
 		const alreadyAssigned = getAssigned(segment);
-		if (alreadyAssigned === numDates) {
+		if (alreadyAssigned === numAdditionalEntries) {
 			possibilities.push(centerVacation(segment));
 			return;
 		}
-		const leftToAssign = numDates - alreadyAssigned;
+		const leftToAssign = numAdditionalEntries - alreadyAssigned;
 		for (let i = 1; i <= leftToAssign; i++) {
 			const lastAssignment = getLastAssignment(segment);
 			const segmentToAssign = segment.slice(lastAssignment + 1, segment.length);
@@ -41,7 +41,7 @@ export const getVacationPossibilities = (segment: boolean[], numDates: number): 
 				continue;
 			}
 
-			const assignedSegment = assignVacationToSegment(segmentToAssign as false[], i);
+			const assignedSegment = addEntriesToSelection(segmentToAssign as false[], i);
 			const newSegment = [
 				...segment.slice(0, lastAssignment === -1 ? 0 : lastAssignment + 1),
 				...assignedSegment,

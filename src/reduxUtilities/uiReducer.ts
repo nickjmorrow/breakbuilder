@@ -7,10 +7,11 @@ import { isSelectedDate } from 'typeGuards/isSelectedDate';
 import { getSelectedDate } from 'dateTypeProviders/getSelectedDate';
 import { getEmptyDate } from 'dateTypeProviders/getEmptyDate';
 import { getUpdatedConnectedDates } from 'utilities/getUpdatedConnectedDates';
-import { getCurrentYear } from 'utilities/getCurrentYear';
-import { getUpdatedDates } from 'utilities/getUpdatedDates';
+import { getCurrentYear } from 'utilities/dateUtilities/getCurrentYear';
+import { getUpdatedSuggestedDates } from 'utilities/getUpdatedSuggestedDates';
 import { isEmptyDate } from 'typeGuards/isEmptyDate';
 import { isSuggestedDate } from 'typeGuards/isSuggestedDate';
+import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 
 export type UiState = Readonly<typeof initialState>;
 
@@ -80,7 +81,10 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 		case UiActionKeys.GET_SUGGESTED_DATES:
 			return produce(state, draftState => {
 				draftState.calendarDates = getUpdatedConnectedDates(
-					getUpdatedDates(draftState.calendarDates, draftState.numVacationDates),
+					getUpdatedSuggestedDates(
+						draftState.calendarDates,
+						numRemainingVacationDatesSelector({ ui: draftState }),
+					),
 				);
 			});
 		case UiActionKeys.SET_NUM_VACATION_DATES:

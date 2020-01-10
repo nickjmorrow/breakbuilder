@@ -1,5 +1,5 @@
-import { getGaps } from 'utilities/getGaps';
-import { getBooleanArrayFromBinaryString } from 'utilities/getBooleanArrayFromBinaryString';
+import { getGaps } from 'utilities/evenSelectionCreation/getGaps/getGaps';
+import { getBooleanArrayFromBinaryString } from 'utilities/testutilities/testUtilities/getBooleanArrayFromBinaryString';
 
 describe('get gaps', () => {
 	it('throws when 0 assignments', () => {

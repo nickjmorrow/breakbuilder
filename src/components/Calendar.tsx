@@ -6,6 +6,7 @@ import { Theme } from '@nickjmorrow/react-component-library/dist/typeUtilities';
 import { AppState } from 'reduxUtilities/AppState';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { CalendarEntry } from 'components/CalendarEntry';
+import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 
 import { connect } from 'react-redux';
 

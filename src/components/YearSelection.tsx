@@ -4,7 +4,7 @@ import { AppState } from 'reduxUtilities/AppState';
 import { Dispatch } from 'redux';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { connect } from 'react-redux';
-import { getCurrentYear } from 'utilities/getCurrentYear';
+import { getCurrentYear } from 'utilities/dateUtilities/getCurrentYear';
 
 const YearSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>> = ({
 	currentYear,

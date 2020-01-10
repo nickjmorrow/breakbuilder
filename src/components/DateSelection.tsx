@@ -6,11 +6,13 @@ import { Dispatch } from 'redux';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { connect } from 'react-redux';
 import { AppState } from 'reduxUtilities/AppState';
+import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 
 const DateSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>> = ({
 	getSuggestedDates,
 	numVacationDates,
 	setNumVacationDates,
+	numRemainingVacationDates,
 }) => {
 	return (
 		<div style={{ minHeight: '100vh' }}>
@@ -39,6 +41,7 @@ const DateSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & Retur
 				<TextInput
 					placeholder={'Total Available Dates'}
 					value={numVacationDates}
+					label={`Vacation Days (${numRemainingVacationDates} remaining)`}
 					type={'number'}
 					style={{ marginTop: '16px' }}
 					onChange={e => setNumVacationDates(parseInt(e.currentTarget.value, 10))}
@@ -54,6 +57,7 @@ const DateSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & Retur
 
 const mapStateToProps = (state: AppState) => ({
 	numVacationDates: state.ui.numVacationDates,
+	numRemainingVacationDates: numRemainingVacationDatesSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

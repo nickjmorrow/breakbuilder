@@ -5,7 +5,6 @@ import { ConnectedDate } from 'types/ConnectedDate';
 import { WrappedDate } from 'types/WrappedDate';
 import { getEmptyDate } from 'dateTypeProviders/getEmptyDate';
 import { isCalendarDateEqual } from 'utilities/isCalendarDateEqual';
-import { isSelectedDate } from 'typeGuards/isSelectedDate';
 import { isVacationDate } from 'typeGuards/isVacationDate';
 
 export const getUpdatedConnectedDates = (dates: CalendarDate[]): CalendarDate[] => {
