@@ -9,12 +9,12 @@ export const getCalendarDatesForMonth = (year: number, month: number): EmptyDate
 		const newDate = new Date();
 
 		// JS date is 0-indexed
-		newDate.setDate(intermediateShape.day);
-		newDate.setMonth(intermediateShape.month);
-		newDate.setFullYear(intermediateShape.year);
-		newDate.setHours(0);
-		newDate.setMinutes(0);
-		newDate.setSeconds(0);
+		newDate.setUTCDate(intermediateShape.day);
+		newDate.setUTCMonth(intermediateShape.month);
+		newDate.setUTCFullYear(intermediateShape.year);
+		newDate.setUTCHours(0);
+		newDate.setUTCMinutes(0);
+		newDate.setUTCSeconds(0);
 		return { date: newDate, type: 'empty' };
 	};
 
