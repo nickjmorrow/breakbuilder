@@ -7,7 +7,7 @@
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"build:watch": "ts-node-dev src/infrastructure/server.ts",
-		"prebuild": "npm install && npm install -g typescript && rm -rf dist",
+		"prebuild": "rm -rf dist",
 		"build": "tsc",
 		"start": "node dist/src/infrastructure/server.js",
 		"deploy": "heroku push origin master"

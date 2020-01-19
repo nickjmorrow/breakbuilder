@@ -1,10 +1,8 @@
-import express = require("express");
-import middleware from "./middleware";
-import errorHandlers from "./middleware/errorHandlers";
-import { routes } from "./routes";
-import { applyMiddleware, applyRoutes } from "./utils";
-import passport from "passport";
-import { useGoogleTokenStrategy } from "./passport";
+import express = require('express');
+import middleware from './middleware';
+import errorHandlers from './middleware/errorHandlers';
+import { routes } from './routes';
+import { applyMiddleware, applyRoutes } from './utils';
 
 export const router = express();
 
@@ -13,6 +11,3 @@ applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
 
 router.use(express.json());
-router.use(passport.initialize());
-
-useGoogleTokenStrategy(passport);
