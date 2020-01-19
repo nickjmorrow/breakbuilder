@@ -9,7 +9,10 @@ export class VacationPlan {
 	@Column({ name: 'url' })
 	url!: string;
 
-	@OneToMany(type => VacationPlanDate, vacationPlanDate => vacationPlanDate.vacationPlan)
+	@OneToMany(
+		type => VacationPlanDate,
+		vacationPlanDate => vacationPlanDate.vacationPlan,
+	)
 	@JoinColumn({ name: 'vacation_plan_date_id' })
 	vacationPlanDates!: VacationPlanDate[];
 }

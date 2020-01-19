@@ -1,5 +1,5 @@
 {
-	"name": "search-api",
+	"name": "breakbuilder-server",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -10,7 +10,9 @@
 		"prebuild": "rm -rf dist",
 		"build": "tsc",
 		"start": "node dist/src/infrastructure/server.js",
-		"deploy": "heroku push origin master"
+		"deploy": "heroku push origin master",
+		"format": "prettier --write \"src/**/*.{js,ts,tsx}\"",
+		"lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
 	},
 	"keywords": [],
 	"author": "Nicholas Morrow <njmorrow95@gmail.com> (https://github.com/nickjmorrow)",
@@ -28,6 +30,7 @@
 		"@types/passport-google-oauth2": "^0.1.2",
 		"@types/sinon": "^7.0.11",
 		"@types/winston": "^2.4.4",
+		"eslint-plugin-prettier": "^3.1.2",
 		"sinon": "^7.3.1",
 		"ts-jest": "^24.0.0",
 		"tsc-watch": "^2.1.2",
@@ -35,12 +38,16 @@
 		"typescript": "^3.3.3333"
 	},
 	"dependencies": {
+		"@typescript-eslint/eslint-plugin": "^2.16.0",
+		"@typescript-eslint/parser": "^2.16.0",
 		"axios": "^0.18.0",
 		"circular-json": "^0.5.9",
 		"compression": "^1.7.3",
 		"cors": "^2.8.5",
 		"cross-env": "^5.2.0",
 		"dotenv": "^7.0.0",
+		"eslint": "^6.8.0",
+		"eslint-config-prettier": "^6.9.0",
 		"express": "^5.0.0-alpha.7",
 		"imdb-api": "^4.0.2",
 		"jest": "^24.5.0",
@@ -50,6 +57,8 @@
 		"passport-google-oauth20": "^2.0.0",
 		"passport-google-token": "^0.1.2",
 		"pg": "^7.9.0",
+		"prettier": "^1.19.1",
+		"prettier-eslint": "^9.0.1",
 		"reflect-metadata": "^0.1.13",
 		"typeorm": "^0.2.14",
 		"winston": "^3.2.1"

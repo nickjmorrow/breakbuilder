@@ -17,7 +17,7 @@ export class HTTP400Error extends HTTPClientError {
 	readonly statusCode = 400;
 	readonly message: string;
 
-	constructor(message: string = 'Bad Request') {
+	constructor(message = 'Bad Request') {
 		super(message);
 		this.message = message;
 	}

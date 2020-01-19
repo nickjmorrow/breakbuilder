@@ -29,5 +29,4 @@ const configureStore = (initialState: AppState) => {
 	return intermediateStore;
 };
 
-// @ts-ignore
 export const store = configureStore((window as any).initialReduxState);

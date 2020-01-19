@@ -1,14 +1,14 @@
-interface IValue<T> {
+interface ValueType<T> {
 	type: 'value';
 	value: T;
 }
 
-interface IError<E extends Error> {
+interface ErrorType<E extends Error> {
 	type: 'error';
 	error: E;
 }
 
-type ResultType<T, E extends Error> = IValue<T> | IError<E>;
+type ResultType<T, E extends Error> = ValueType<T> | ErrorType<E>;
 
 export class Result<T, E extends Error> {
 	constructor(public result: ResultType<T, E>) {}

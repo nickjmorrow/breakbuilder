@@ -9,6 +9,9 @@ export class DateType {
 	@Column({ name: 'name' })
 	name!: 'selected' | 'empty' | 'holiday';
 
-	@OneToMany(type => VacationPlanDate, vacationPlanDate => vacationPlanDate.dateType)
+	@OneToMany(
+		type => VacationPlanDate,
+		vacationPlanDate => vacationPlanDate.dateType,
+	)
 	vacationPlanDate!: VacationPlanDate;
 }

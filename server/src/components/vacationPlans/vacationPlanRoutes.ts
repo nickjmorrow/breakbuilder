@@ -1,9 +1,9 @@
-import { IRoute } from '../../infrastructure/types';
+import { Route } from '../../infrastructure/types';
 import { vacationPlanService, CreateVacationPlanRequestModel, VacationPlanModel } from './vacationPlanService';
 import { HTTP400Error } from '../../infrastructure/utils/httpErrors';
 import { ArgumentType } from '../../typeUtilities/ArgumentType';
 
-export const vacationPlanRoutes: IRoute[] = [
+export const vacationPlanRoutes: Route[] = [
 	{
 		path: '/vacationPlans',
 		method: 'get',

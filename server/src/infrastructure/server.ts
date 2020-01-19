@@ -1,20 +1,20 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-import http from "http";
-import "reflect-metadata";
-import { createConnection } from "typeorm";
-import { router } from "./app";
-import { typeOrmConfig } from "./config";
-import { logger } from "./logger";
+import http from 'http';
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
+import { router } from './app';
+import { typeOrmConfig } from './config';
+import { logger } from './logger';
 
-process.on("uncaughtException", e => {
+process.on('uncaughtException', e => {
 	logger.error(e);
 	process.exit(1);
 });
 
-process.on("unhandledRejection", e => {
+process.on('unhandledRejection', e => {
 	logger.error(e!);
 	process.exit(1);
 });

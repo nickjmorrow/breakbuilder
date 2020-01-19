@@ -4,7 +4,7 @@ class NotImplementedException extends Error {
 	name: string;
 	constructor() {
 		super();
-		this.name = "NotImplementedException";
+		this.name = 'NotImplementedException';
 		Object.setPrototypeOf(this, NotImplementedException.prototype);
 	}
 }
@@ -14,7 +14,7 @@ class ShouldNeverGetHereException extends Error {
 
 	constructor() {
 		super();
-		this.name = "ShouldNeverGetHereException";
+		this.name = 'ShouldNeverGetHereException';
 		Object.setPrototypeOf(this, ShouldNeverGetHereException.prototype);
 	}
 }
@@ -25,16 +25,13 @@ class ArgumentException extends Error {
 
 	constructor(message: string) {
 		super(message);
-		this.name = "ArgumentException";
+		this.name = 'ArgumentException';
 		this.message = message;
 	}
 }
 
 export class Throw {
-	static if: (condition: boolean, message: string) => void = (
-		condition,
-		message
-	) => {
+	static if: (condition: boolean, message: string) => void = (condition, message) => {
 		if (condition) {
 			throw new ArgumentException(message);
 		}
@@ -42,7 +39,7 @@ export class Throw {
 
 	static ifNull: (obj: any, message?: string) => void = (obj, message) => {
 		if (obj === null || obj === undefined) {
-			throw new ArgumentException(message || "");
+			throw new ArgumentException(message || '');
 		}
 	};
 

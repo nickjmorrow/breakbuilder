@@ -10,11 +10,17 @@ export class VacationPlanDate {
 	@Column({ name: 'calendar_date' })
 	calendarDate!: Date;
 
-	@ManyToOne(type => VacationPlan, vacationPlan => vacationPlan.vacationPlanDates)
+	@ManyToOne(
+		type => VacationPlan,
+		vacationPlan => vacationPlan.vacationPlanDates,
+	)
 	@JoinColumn({ name: 'vacation_plan_id' })
 	vacationPlan!: VacationPlan;
 
-	@ManyToOne(type => DateType, dateType => dateType.vacationPlanDate)
+	@ManyToOne(
+		type => DateType,
+		dateType => dateType.vacationPlanDate,
+	)
 	@JoinColumn({ name: 'date_type_id' })
 	dateType!: DateType;
 }

@@ -29,7 +29,7 @@ export const vacationPlanService = {
 			throw new HTTP400Error(`No vacation plan found with url ${url}.`);
 		}
 
-		var calendarDates: CalendarDateModel[] = await manager.query(`
+		const calendarDates: CalendarDateModel[] = await manager.query(`
 			SELECT
 				vpd.calendar_date AS date
 				, dt.name AS type
