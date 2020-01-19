@@ -16,11 +16,15 @@ import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 export type UiState = Readonly<typeof initialState>;
 
 const currentYear = getCurrentYear();
+const thisYearsDates = getCalendarDatesForYear(currentYear);
+
 const initialState = {
-	calendarDates: getCalendarDatesForYear(currentYear),
+	calendarDates: thisYearsDates,
 	currentMonth: 0,
 	currentYear,
 	numVacationDates: 10,
+	hasCheckedForSavedVacationPlan: false,
+	getVacationPlanSuccess: null as true | false | null,
 };
 
 export const uiReducer = (state: UiState = initialState, action: ActionType<typeof uiActions>) => {
@@ -87,6 +91,18 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 		case UiActionKeys.SET_NUM_VACATION_DATES:
 			return produce(state, draftState => {
 				draftState.numVacationDates = action.payload;
+			});
+		case UiActionKeys.GET_VACATION_PLAN_SUCCESS:
+			return produce(state, draftState => {
+				draftState.calendarDates = getUpdatedConnectedDates(
+					action.payload.calendarDates.map(cd => ({ ...cd, date: new Date(cd.date) })),
+				);
+
+				draftState.getVacationPlanSuccess = true;
+			});
+		case UiActionKeys.GET_VACATION_PLAN_FAILURE:
+			return produce(state, draftState => {
+				draftState.getVacationPlanSuccess = false;
 			});
 		default:
 			return state;

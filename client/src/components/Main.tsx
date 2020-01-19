@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { YearSelection } from 'components/YearSelection';
 import { DateSelection } from 'components/DateSelection';
 import { useThemeContext } from '@nickjmorrow/react-component-library';
 
@@ -17,7 +16,6 @@ export const Main: React.FC = () => {
 				flexDirection: 'column',
 			}}
 		>
-			<YearSelection />
 			<DateSelection />
 		</div>
 	);

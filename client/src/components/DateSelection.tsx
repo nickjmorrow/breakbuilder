@@ -7,6 +7,7 @@ import { uiActions } from 'reduxUtilities/uiActions';
 import { connect } from 'react-redux';
 import { AppState } from 'reduxUtilities/AppState';
 import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
+import { SaveButton } from 'components/SaveButton';
 
 const DateSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>> = ({
 	getSuggestedDates,
@@ -33,7 +34,7 @@ const DateSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & Retur
 				</div>
 			</div>
 			<Calendar />
-			<Analytics />
+			{/* <Analytics /> */}
 			<div style={{ marginTop: '40px' }}>
 				<Typography colorVariant={'primaryLight'} sizeVariant={4} weightVariant={7}>
 					Calculation Inputs
@@ -50,6 +51,7 @@ const DateSelectionInternal: React.FC<ReturnType<typeof mapStateToProps> & Retur
 				<Button onClick={() => getSuggestedDates()} colorVariant={'accent'} style={{ margin: '16px 0' }}>
 					Calculate
 				</Button>
+				<SaveButton />
 			</div>
 		</div>
 	);

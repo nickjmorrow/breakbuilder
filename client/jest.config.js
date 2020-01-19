@@ -5,7 +5,6 @@ const getDirectories = source =>
 		.filter(dirent => dirent.isDirectory())
 		.map(dirent => dirent.name);
 
-// console.log(getDirectories('src'));
 module.exports = {
 	transform: {
 		'^.+\\.[jt]sx?$': '<rootDir>/jest-preprocess.js',

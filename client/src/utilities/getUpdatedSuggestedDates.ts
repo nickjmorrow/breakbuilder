@@ -5,7 +5,6 @@ import { isSelectedDate } from 'typeGuards/isSelectedDate';
 
 export const getUpdatedSuggestedDates = (dates: CalendarDate[], numVacationDaysToAssign: number): CalendarDate[] => {
 	const currentEntries = dates.map(isSelectedDate);
-	console.log(numVacationDaysToAssign);
 	const updatedEntries = getMostEvenSelection(currentEntries, numVacationDaysToAssign);
 	const isNewlyAdded = currentEntries.map((cd, i) => updatedEntries[i] && cd !== updatedEntries[i]);
 	return dates.map((d, i) => {
