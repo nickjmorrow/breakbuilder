@@ -1,0 +1,19 @@
+
+DROP TABLE wtl.cities;
+
+CREATE TABLE wtl.cities (
+    city_id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+    , name VARCHAR NOT NULL
+    , population INT NOT NULL
+    , happiness INT NOT NULL
+    , cost_of_living INT NOT NULL
+    , tech_jobs INT NOT NULL
+);
+
+INSERT INTO wtl.cities (name, population, happiness, cost_of_living, tech_jobs)
+VALUES
+    ('San Francisco, CA', 100000, 59, 73, 43000)
+    , ('Chicago, IL', 200000, 92, 23, 29000)
+    , ('Atlanta, GA', 350000, 73, 29, 37000)
+    , ('New York, NY', 900000, 27, 92, 56000);
+

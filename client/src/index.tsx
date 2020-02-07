@@ -8,13 +8,13 @@ import axios from 'axios';
 import { store } from 'reduxUtilities/store';
 import { getBaseUrl } from 'utilities/getBaseUrl';
 import { Router } from 'react-router';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
 axios.defaults.baseURL = getBaseUrl();
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Router history={createHistory()}>
+		<Router history={createBrowserHistory()}>
 			<App />
 		</Router>
 	</Provider>,

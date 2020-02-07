@@ -1,34 +1,31 @@
 import { Button } from '@nickjmorrow/react-component-library';
 import * as React from 'react';
+import { push } from 'react-router-redux';
 import { connect, useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { AppState } from 'reduxUtilities/AppState';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { CreateVacationPlanRequestModel } from 'types/apiContracts/CreateVacationPlanRequestModel';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { getVacationPlanUrl } from 'utilities/getVacationPlanUrl';
-import { push } from 'react-router-redux';
 
 const SaveButtonInternal: React.FC<ReturnType<typeof mapStateToProps> &
 	ReturnType<typeof mapDispatchToProps> &
-	RouteComponentProps> = ({ calendarDates, getVacationPlan, createVacationPlan, location }) => {
+	RouteComponentProps> = ({ calendarDates, createVacationPlan, location }) => {
 	const dispatch = useDispatch();
 	const url = getVacationPlanUrl(location.pathname);
+	const isBaseUrl = url === '';
+
+	const text = isBaseUrl ? 'Save' : 'Update';
+	const handleClick = isBaseUrl ? () => createVacationPlan({ calendarDates }) : () => updateVacationPlan();
 
 	const updateVacationPlan = () => dispatch(uiActions.updateVacationPlan.request({ url, calendarDates }));
 
 	return (
-		<>
-			<Button colorVariant={'accent'} onClick={() => getVacationPlan('some_url')}>
-				Get
-			</Button>
-			<Button colorVariant={'accent'} onClick={() => createVacationPlan({ calendarDates })}>
-				Create
-			</Button>
-			<Button colorVariant={'accent'} onClick={() => updateVacationPlan()}>
-				Update
-			</Button>
-		</>
+		<Button colorVariant={'accent'} onClick={handleClick}>
+			{text}
+		</Button>
 	);
 };
 

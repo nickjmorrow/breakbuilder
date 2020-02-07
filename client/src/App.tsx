@@ -45,8 +45,7 @@ const AppInternal: React.FC<RouteComponentProps> = ({ location }) => {
 
 	// check if url exists in database
 	if (mayBeSavedVacationPlan && getVacationPlanSuccess === null) {
-		const getVacationPlan = dispatch(uiActions.getVacationPlan.request(url));
-		const doesUrlExistInDatabase = false;
+		dispatch(uiActions.getVacationPlan.request(url));
 	}
 
 	return (

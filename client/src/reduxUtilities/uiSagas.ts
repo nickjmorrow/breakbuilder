@@ -1,9 +1,7 @@
 import axios from 'axios';
-import { call, put, takeEvery, actionChannel } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { uiActions, UiActionKeys } from 'reduxUtilities/uiActions';
 import { CalendarDate } from 'types/CalendarDate';
-import { CalendarDateModel } from 'types/apiContracts/CalendarDateModel';
-import { push } from 'react-router-redux';
 
 function* getVacationPlanAsync(action: ReturnType<typeof uiActions.updateVacationPlan.request>) {
 	try {

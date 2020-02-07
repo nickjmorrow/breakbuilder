@@ -1,6 +1,5 @@
 import { AppState } from 'reduxUtilities/AppState';
 import { createSelector } from 'reselect';
-import { isVacationDate } from 'typeGuards/isVacationDate';
 import { isSelectedDate } from 'typeGuards/isSelectedDate';
 import { isSuggestedDate } from 'typeGuards/isSuggestedDate';
 

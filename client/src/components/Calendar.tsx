@@ -35,15 +35,15 @@ const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnT
 			</div>
 			<InnerCalendar theme={theme}>
 				{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+					<div key={d} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 						<Typography sizeVariant={1}>{d}</Typography>
 					</div>
 				))}
 
 				{calendarDates
 					.filter(cd => cd.date.getMonth() === currentMonth)
-					.map(d => (
-						<CalendarEntry calendarDate={d} />
+					.map((d, i) => (
+						<CalendarEntry key={i} calendarDate={d} />
 					))}
 			</InnerCalendar>
 		</StyledCalendar>

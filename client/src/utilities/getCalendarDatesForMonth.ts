@@ -15,14 +15,12 @@ export const getCalendarDatesForMonth = (year: number, month: number): EmptyDate
 		newDate.setUTCHours(0);
 		newDate.setUTCMinutes(0);
 		newDate.setUTCSeconds(0);
+		
 		return { date: newDate, type: 'empty' };
 	};
 
 	const calendarDates = days.filter(isIntermediateShape).map(toCalendarDate);
 
-	// if (month === 0) {
-	// 	console.log(calendarDates);
-	// }
 	return calendarDates;
 };
 

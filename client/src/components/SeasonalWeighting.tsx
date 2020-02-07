@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { AppState } from 'reduxUtilities/AppState';
 import { Typography } from '@nickjmorrow/react-component-library';
 import { CalendarDate } from 'types/CalendarDate';
 import { isVacationDate } from 'typeGuards/isVacationDate';
+import { RootState } from 'reduxUtilities/rootReducer';
 
 type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -16,11 +17,10 @@ const monthSeasonMapping: { [k in Season]: Month[] } = {
 
 type Season = 'Spring' | 'Summer' | 'Fall' | 'Winter';
 
-const SeasonalWeightingInternal: React.FC<{ style?: React.CSSProperties } & ReturnType<typeof mapStateToProps>> = ({
-	calendarDates,
-	style,
-}) => {
+export const SeasonalWeighting: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
 	const seasons: Season[] = ['Spring', 'Summer', 'Fall', 'Winter'];
+	const calendarDates = useSelector((state: RootState) => state.ui.calendarDates);
+
 	return (
 		<div style={{ display: 'flex', flexDirection: 'row', ...style }}>
 			{seasons.map(s => (
@@ -57,9 +57,3 @@ const getNumDatesInSeason = (calendarDates: CalendarDate[], season: Season): num
 	const months = monthSeasonMapping[season];
 	return calendarDates.filter(cd => months.some(m => m === cd.date.getMonth() && isVacationDate(cd))).length;
 };
-
-const mapStateToProps = (state: AppState) => ({
-	calendarDates: state.ui.calendarDates,
-});
-
-export const SeasonalWeighting = connect(mapStateToProps, null)(SeasonalWeightingInternal);

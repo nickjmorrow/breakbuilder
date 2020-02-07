@@ -2,7 +2,6 @@ import { action } from 'typesafe-actions';
 import { EmptyDate } from 'types/EmptyDate';
 import { SelectedDate } from 'types/SelectedDate';
 import { SuggestedDate } from 'types/SuggestedDate';
-import { VacationPlan } from 'types/VacationPlan';
 import { SaveResponse } from 'types/SaveResponse';
 import { VacationPlanModel } from 'types/apiContracts/VacationPlanModel';
 import { CreateVacationPlanRequestModel } from 'types/apiContracts/CreateVacationPlanRequestModel';
