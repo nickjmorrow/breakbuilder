@@ -68,6 +68,7 @@ const Ball = styled('div')<{ backgroundColor: string }>`
 	justify-content: center;
 	margin: 14px;
 	background-color: ${p => p.backgroundColor};
+	transition: background-color 500ms;
 `;
 
 const BallContainer = styled.div`
