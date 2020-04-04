@@ -7,17 +7,22 @@ import { AppState } from 'reduxUtilities/AppState';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { CalendarEntry } from 'components/CalendarEntry';
 
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { CalendarDate } from 'types/CalendarDate';
+import { RootState } from 'reduxUtilities/rootReducer';
+import { getCalendarDatesForMonth } from 'utilities/getCalendarDatesForMonth';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>> = ({
-	currentMonth,
-	calendarDates,
-	setMonth,
-}) => {
+export const Calendar: React.FC = () => {
 	const theme = useThemeContext();
-	console.log(calendarDates);
+	const dispatch = useDispatch();
+	const setMonth = (month: number) => dispatch(uiActions.setMonth(month));
+
+	const currentMonth = useSelector((state: RootState) => state.ui.currentMonth);
+	const currentYear = useSelector((state: RootState) => state.ui.currentYear);
+	const calendarDates = useSelector((state: RootState) => state.ui.calendarDates);
+
 	return (
 		<StyledCalendar theme={theme}>
 			<div
@@ -40,27 +45,63 @@ const CalendarInternal: React.FC<ReturnType<typeof mapDispatchToProps> & ReturnT
 					</div>
 				))}
 
-				{calendarDates
-					.filter(cd => cd.date.getMonth() === currentMonth)
-					.map((d, i) => (
-						<CalendarEntry key={i} calendarDate={d} />
-					))}
+				{getPaddedCalendarDates(calendarDates, currentMonth, currentYear).map((d, i) => (
+					<CalendarEntry key={i} calendarDate={d} />
+				))}
 			</InnerCalendar>
 		</StyledCalendar>
 	);
 };
 
-// redux
-const mapStateToProps = (state: AppState) => ({
-	currentMonth: state.ui.currentMonth,
-	calendarDates: state.ui.calendarDates,
-});
+// utilities
+const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: number, currentYear: number) => {
+	const monthDates = calendarDates.filter(cd => cd.date.getMonth() === currentMonth);
+	const firstDateOfMonth = monthDates[0];
+	const firstDayOfMonth = firstDateOfMonth.date.getDay();
+	const numPreviousPaddingDays = firstDayOfMonth;
+	const previousMonthDays = getPreviousMonthCalendarDates(currentMonth, currentYear);
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	setMonth: (month: number) => dispatch(uiActions.setMonth(month)),
-});
+	const previousDates = Array(numPreviousPaddingDays)
+		.fill(null)
+		.map((d, i) => {
+			const previousMonthDateIndex = previousMonthDays.length - 1 - i;
+			return previousMonthDays[previousMonthDateIndex];
+		})
+		.reverse();
 
-export const Calendar = connect(mapStateToProps, mapDispatchToProps)(CalendarInternal);
+	const lastDateOfMonth = monthDates[monthDates.length - 1];
+	const lastDayOfMonth = lastDateOfMonth.date.getDay();
+	const SATURDAY_INDEX = 6;
+	const numNextPaddingDays = SATURDAY_INDEX - lastDayOfMonth;
+	const nextMonthCalendarDates = getNextMonthCalendarDates(currentMonth, currentYear);
+
+	const nextDates = Array(numNextPaddingDays)
+		.fill(null)
+		.map((d, i) => {
+			const nextMonthDateIndex = i;
+			return nextMonthCalendarDates[nextMonthDateIndex];
+		});
+
+	console.log(previousDates);
+	console.log(monthDates);
+	console.log(nextDates);
+
+	return [...previousDates, ...monthDates, ...nextDates];
+};
+
+const getPreviousMonthCalendarDates = (currentMonth: number, currentYear: number) => {
+	if (currentMonth === 0) {
+		return getCalendarDatesForMonth(currentYear - 1, 11);
+	}
+	return getCalendarDatesForMonth(currentYear, currentMonth - 1);
+};
+
+const getNextMonthCalendarDates = (currentMonth: number, currentYear: number) => {
+	if (currentMonth === 11) {
+		return getCalendarDatesForMonth(currentYear + 1, 0);
+	}
+	return getCalendarDatesForMonth(currentYear, currentMonth + 1);
+};
 
 // css
 const StyledCalendar = styled('div')<{ theme: Theme }>`
@@ -73,4 +114,5 @@ const InnerCalendar = styled('div')<{ theme: Theme }>`
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	width: min-content;
+	height: 360px;
 `;

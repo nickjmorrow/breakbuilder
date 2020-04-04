@@ -17,6 +17,7 @@ const themeInputs: ArgumentType<typeof updateThemeInputs>[0] = {
 	typography: {
 		fontFamily: {
 			default: 'Overpass, sans-serif',
+			title: 'Quicksand, sans-serif',
 		},
 	},
 	colors: {
@@ -31,6 +32,9 @@ const themeInputs: ArgumentType<typeof updateThemeInputs>[0] = {
 		},
 	},
 	defaultShowBoxShadow: false,
+	appSettings: {
+		appName: 'Breakbuilder',
+	},
 };
 
 const AppInternal: React.FC<RouteComponentProps> = ({ location }) => {

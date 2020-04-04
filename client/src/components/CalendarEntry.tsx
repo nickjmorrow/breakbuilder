@@ -4,7 +4,7 @@ import { Typography, useThemeContext, Theme, UIState } from '@nickjmorrow/react-
 import { EmptyDate } from 'types/EmptyDate';
 import { Dispatch } from 'redux';
 import { uiActions } from 'reduxUtilities/uiActions';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'reduxUtilities/AppState';
 import { isWeekend } from 'utilities/dateUtilities/isWeekend';
 import { CalendarDate } from 'types/CalendarDate';
@@ -16,6 +16,7 @@ import { isConnectedDate } from 'typeGuards/isConnectedDate';
 import { isHolidayDate } from 'typeGuards/isHolidayDate';
 import { SuggestedDate } from 'types/SuggestedDate';
 import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
+import { stat } from 'fs';
 
 interface OwnProps {
 	calendarDate: CalendarDate;
@@ -25,11 +26,13 @@ const CalendarEntryInternal: React.FC<OwnProps &
 	ReturnType<typeof mapStateToProps> &
 	ReturnType<typeof mapDispatchToProps>> = ({
 	calendarDate,
-	toggleDate,
-	isInCurrentMonth,
 	numVacationDatesRemaining,
 }) => {
 	const theme = useThemeContext();
+	const dispatch = useDispatch();
+	const isInCurrentMonth = useSelector((state: AppState) => state.ui.currentMonth === calendarDate.date.getMonth());
+	const toggleDate = (calendarDate: EmptyDate | SelectedDate | SuggestedDate) => dispatch(uiActions.toggleDate(calendarDate));
+	
 	return (
 		<StyledCalendarEntry
 			calendarDate={calendarDate}
