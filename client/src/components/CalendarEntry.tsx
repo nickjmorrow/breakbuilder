@@ -10,11 +10,9 @@ import { isWeekend } from 'utilities/dateUtilities/isWeekend';
 import { CalendarDate } from 'types/CalendarDate';
 import { SelectedDate } from 'types/SelectedDate';
 import { isSelectedDate } from 'typeGuards/isSelectedDate';
-import { isSuggestedDate } from 'typeGuards/isSuggestedDate';
 import { isEmptyDate } from 'typeGuards/isEmptyDate';
 import { isConnectedDate } from 'typeGuards/isConnectedDate';
 import { isHolidayDate } from 'typeGuards/isHolidayDate';
-import { SuggestedDate } from 'types/SuggestedDate';
 import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 import { stat } from 'fs';
 
@@ -24,26 +22,28 @@ interface OwnProps {
 
 const CalendarEntryInternal: React.FC<OwnProps &
 	ReturnType<typeof mapStateToProps> &
-	ReturnType<typeof mapDispatchToProps>> = ({
-	calendarDate,
-	numVacationDatesRemaining,
-}) => {
+	ReturnType<typeof mapDispatchToProps>> = ({ calendarDate, numVacationDatesRemaining }) => {
 	const theme = useThemeContext();
 	const dispatch = useDispatch();
 	const isInCurrentMonth = useSelector((state: AppState) => state.ui.currentMonth === calendarDate.date.getMonth());
-	const toggleDate = (calendarDate: EmptyDate | SelectedDate | SuggestedDate) => dispatch(uiActions.toggleDate(calendarDate));
-	
+	const toggleDate = (calendarDate: EmptyDate | SelectedDate) => dispatch(uiActions.toggleDate(calendarDate));
+	const setMonth = () => dispatch(uiActions.setMonth(calendarDate.date.getMonth()));
+
 	return (
 		<StyledCalendarEntry
 			calendarDate={calendarDate}
 			theme={theme}
 			onClick={() => {
 				if (
-					isSelectedDate(calendarDate) ||
-					(isEmptyDate(calendarDate) && numVacationDatesRemaining > 0) ||
-					isSuggestedDate(calendarDate)
+					(isSelectedDate(calendarDate) || (isEmptyDate(calendarDate) && numVacationDatesRemaining > 0)) &&
+					isInCurrentMonth
 				) {
 					toggleDate(calendarDate);
+				}
+
+				if (!isInCurrentMonth) {
+					setMonth();
+					toggleDate(calendarDate as EmptyDate);
 				}
 			}}
 		>
@@ -53,8 +53,7 @@ const CalendarEntryInternal: React.FC<OwnProps &
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	toggleDate: (calendarDate: EmptyDate | SelectedDate | SuggestedDate) =>
-		dispatch(uiActions.toggleDate(calendarDate)),
+	toggleDate: (calendarDate: EmptyDate | SelectedDate) => dispatch(uiActions.toggleDate(calendarDate)),
 });
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps) => ({
@@ -102,9 +101,6 @@ const getBackgroundColor = (uiState: UIState, calendarDate: CalendarDate, theme:
 	}
 	if (isWeekend(calendarDate)) {
 		return theme.colors.neutral.cs3;
-	}
-	if (isSuggestedDate(calendarDate)) {
-		return theme.colors.accent.cs7;
 	}
 
 	if (uiState === 'active' || isSelectedDate(calendarDate)) {

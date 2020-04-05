@@ -1,7 +1,6 @@
 import { AppState } from 'reduxUtilities/AppState';
 import { createSelector } from 'reselect';
 import { isSelectedDate } from 'typeGuards/isSelectedDate';
-import { isSuggestedDate } from 'typeGuards/isSuggestedDate';
 
 const getUiSlice = (state: AppState) => state.ui;
 
@@ -15,7 +14,7 @@ export const numRemainingVacationDatesSelector = createSelector(
 	(calendarDates, numVacationDates) =>
 		numVacationDates -
 		calendarDates.reduce((agg, cur) => {
-			if (isSelectedDate(cur) || isSuggestedDate(cur)) {
+			if (isSelectedDate(cur)) {
 				agg += 1;
 			}
 			return agg;

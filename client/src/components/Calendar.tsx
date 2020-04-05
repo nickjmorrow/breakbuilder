@@ -72,9 +72,12 @@ const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: num
 	const lastDateOfMonth = monthDates[monthDates.length - 1];
 	const lastDayOfMonth = lastDateOfMonth.date.getDay();
 	const SATURDAY_INDEX = 6;
-	const numNextPaddingDays = SATURDAY_INDEX - lastDayOfMonth;
-	const nextMonthCalendarDates = getNextMonthCalendarDates(currentMonth, currentYear);
 
+	const nextMonthCalendarDates = getNextMonthCalendarDates(currentMonth, currentYear);
+	const requiredDays = 7 * 6;
+
+	// const numNextPaddingDays = SATURDAY_INDEX - lastDayOfMonth;
+	const numNextPaddingDays = requiredDays - (previousDates.length + monthDates.length);
 	const nextDates = Array(numNextPaddingDays)
 		.fill(null)
 		.map((d, i) => {

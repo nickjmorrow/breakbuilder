@@ -8,10 +8,7 @@ import { getSelectedDate } from 'dateTypeProviders/getSelectedDate';
 import { getEmptyDate } from 'dateTypeProviders/getEmptyDate';
 import { getUpdatedConnectedDates } from 'utilities/getUpdatedConnectedDates';
 import { getCurrentYear } from 'utilities/dateUtilities/getCurrentYear';
-import { getUpdatedSuggestedDates } from 'utilities/getUpdatedSuggestedDates';
 import { isEmptyDate } from 'typeGuards/isEmptyDate';
-import { isSuggestedDate } from 'typeGuards/isSuggestedDate';
-import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 
 export type UiState = Readonly<typeof initialState>;
 
@@ -52,7 +49,7 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 				);
 				const foundDate = draftState.calendarDates[foundDateIndex];
 
-				if (!isEmptyDate(foundDate) && !isSelectedDate(foundDate) && !isSuggestedDate(foundDate)) {
+				if (!isEmptyDate(foundDate) && !isSelectedDate(foundDate)) {
 					throw new Error('Unexpected date type was toggled.');
 				}
 
@@ -62,8 +59,6 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 							return getSelectedDate(date);
 						case 'selected':
 							return getEmptyDate(date);
-						case 'suggested':
-							return getSelectedDate(date);
 						default:
 							throw new Error('Should never get here.');
 					}
@@ -81,12 +76,6 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 			return produce(state, draftState => {
 				draftState.currentYear = action.payload;
 				draftState.calendarDates = getUpdatedConnectedDates(getCalendarDatesForYear(action.payload));
-			});
-		case UiActionKeys.GET_SUGGESTED_DATES:
-			return produce(state, draftState => {
-				draftState.calendarDates = getUpdatedConnectedDates(
-					getUpdatedSuggestedDates(state.calendarDates, numRemainingVacationDatesSelector({ ui: state })),
-				);
 			});
 		case UiActionKeys.SET_NUM_VACATION_DATES:
 			return produce(state, draftState => {
