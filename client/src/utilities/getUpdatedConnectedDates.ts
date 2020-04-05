@@ -47,7 +47,7 @@ export const getUpdatedConnectedDates = (dates: CalendarDate[]): CalendarDate[] 
 	return inputDates.map(convertDate);
 };
 
-const getOffsetDate = (date: Date, offset: number) => {
+const getOffsetDate = (date: Date, offset: number): Date => {
 	const newDate = new Date(date);
 	newDate.setUTCDate(date.getUTCDate() + offset);
 	return newDate;

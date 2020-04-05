@@ -15,7 +15,7 @@ import { isHolidayDate } from 'typeGuards/isHolidayDate';
 export type UiState = Readonly<typeof initialState>;
 
 const currentYear = getCurrentYear();
-const thisYearsDates = getCalendarDatesForYear(currentYear);
+const thisYearsDates = getUpdatedConnectedDates(getCalendarDatesForYear(currentYear));
 
 const initialState = {
 	calendarDates: thisYearsDates,
