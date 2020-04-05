@@ -15,6 +15,7 @@ import { isConnectedDate } from 'typeGuards/isConnectedDate';
 import { isHolidayDate } from 'typeGuards/isHolidayDate';
 import { numRemainingVacationDatesSelector } from 'reduxUtilities/uiSelectors';
 import { stat } from 'fs';
+import { HolidayDate } from 'types/HolidayDate';
 
 interface OwnProps {
 	calendarDate: CalendarDate;
@@ -26,7 +27,8 @@ const CalendarEntryInternal: React.FC<OwnProps &
 	const theme = useThemeContext();
 	const dispatch = useDispatch();
 	const isInCurrentMonth = useSelector((state: AppState) => state.ui.currentMonth === calendarDate.date.getMonth());
-	const toggleDate = (calendarDate: EmptyDate | SelectedDate) => dispatch(uiActions.toggleDate(calendarDate));
+	const toggleDate = (calendarDate: EmptyDate | SelectedDate | HolidayDate) =>
+		dispatch(uiActions.toggleDate(calendarDate));
 	const setMonth = () => dispatch(uiActions.setMonth(calendarDate.date.getMonth()));
 
 	return (
@@ -34,10 +36,7 @@ const CalendarEntryInternal: React.FC<OwnProps &
 			calendarDate={calendarDate}
 			theme={theme}
 			onClick={() => {
-				if (
-					(isSelectedDate(calendarDate) || (isEmptyDate(calendarDate) && numVacationDatesRemaining > 0)) &&
-					isInCurrentMonth
-				) {
+				if (!isConnectedDate(calendarDate) && isInCurrentMonth) {
 					toggleDate(calendarDate);
 				}
 

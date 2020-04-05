@@ -1,22 +1,23 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Dispatch } from 'redux';
-import { useThemeContext, Typography, ChevronUpIcon } from '@nickjmorrow/react-component-library';
-import { Theme } from '@nickjmorrow/react-component-library/dist/typeUtilities';
-import { AppState } from 'reduxUtilities/AppState';
+import { useDispatch, useSelector } from 'react-redux';
+import { useThemeContext, Typography, ChevronUpIcon, Theme } from '@nickjmorrow/react-component-library';
 import { uiActions } from 'reduxUtilities/uiActions';
 import { CalendarEntry } from 'components/CalendarEntry';
-
-import { connect, useDispatch, useSelector } from 'react-redux';
 import { CalendarDate } from 'types/CalendarDate';
 import { RootState } from 'reduxUtilities/rootReducer';
 import { getCalendarDatesForMonth } from 'utilities/getCalendarDatesForMonth';
-
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+import { MONTH_NAMES } from 'core/constants/monthNames';
+import { DAYS_OF_WEEK } from 'core/constants/daysOfWeek';
+import { FIRST_MONTH_INDEX } from 'core/constants/firstMonthIndex';
+import { LAST_MONTH_INDEX } from 'core/constants/lastMonthIndex';
+import { REQUIRED_DAYS_IN_CALENDAR } from 'core/constants/requiredDaysInCalendar';
 
 export const Calendar: React.FC = () => {
 	const theme = useThemeContext();
+
 	const dispatch = useDispatch();
+
 	const setMonth = (month: number) => dispatch(uiActions.setMonth(month));
 
 	const currentMonth = useSelector((state: RootState) => state.ui.currentMonth);
@@ -29,17 +30,17 @@ export const Calendar: React.FC = () => {
 				style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}
 			>
 				<ChevronUpIcon
-					onClick={() => setMonth(Math.max(0, currentMonth - 1))}
+					onClick={() => setMonth(Math.max(FIRST_MONTH_INDEX, currentMonth - 1))}
 					style={{ transform: 'rotate(-90deg)', cursor: 'pointer' }}
 				/>
-				<Typography sizeVariant={5}>{monthNames[currentMonth]}</Typography>
+				<Typography sizeVariant={5}>{MONTH_NAMES[currentMonth]}</Typography>
 				<ChevronUpIcon
 					style={{ transform: 'rotate(90deg)', cursor: 'pointer' }}
-					onClick={() => setMonth(Math.min(11, currentMonth + 1))}
+					onClick={() => setMonth(Math.min(LAST_MONTH_INDEX, currentMonth + 1))}
 				/>
 			</div>
 			<InnerCalendar theme={theme}>
-				{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+				{DAYS_OF_WEEK.map(d => (
 					<div key={d} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 						<Typography sizeVariant={1}>{d}</Typography>
 					</div>
@@ -56,9 +57,11 @@ export const Calendar: React.FC = () => {
 // utilities
 const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: number, currentYear: number) => {
 	const monthDates = calendarDates.filter(cd => cd.date.getMonth() === currentMonth);
-	const firstDateOfMonth = monthDates[0];
-	const firstDayOfMonth = firstDateOfMonth.date.getDay();
+
+	const firstDayOfMonth = monthDates[0].date.getDay();
+
 	const numPreviousPaddingDays = firstDayOfMonth;
+
 	const previousMonthDays = getPreviousMonthCalendarDates(currentMonth, currentYear);
 
 	const previousDates = Array(numPreviousPaddingDays)
@@ -69,15 +72,10 @@ const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: num
 		})
 		.reverse();
 
-	const lastDateOfMonth = monthDates[monthDates.length - 1];
-	const lastDayOfMonth = lastDateOfMonth.date.getDay();
-	const SATURDAY_INDEX = 6;
-
 	const nextMonthCalendarDates = getNextMonthCalendarDates(currentMonth, currentYear);
-	const requiredDays = 7 * 6;
 
-	// const numNextPaddingDays = SATURDAY_INDEX - lastDayOfMonth;
-	const numNextPaddingDays = requiredDays - (previousDates.length + monthDates.length);
+	const numNextPaddingDays = REQUIRED_DAYS_IN_CALENDAR - (previousDates.length + monthDates.length);
+
 	const nextDates = Array(numNextPaddingDays)
 		.fill(null)
 		.map((d, i) => {
@@ -85,24 +83,22 @@ const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: num
 			return nextMonthCalendarDates[nextMonthDateIndex];
 		});
 
-	console.log(previousDates);
-	console.log(monthDates);
-	console.log(nextDates);
-
 	return [...previousDates, ...monthDates, ...nextDates];
 };
 
 const getPreviousMonthCalendarDates = (currentMonth: number, currentYear: number) => {
-	if (currentMonth === 0) {
-		return getCalendarDatesForMonth(currentYear - 1, 11);
+	if (currentMonth === FIRST_MONTH_INDEX) {
+		return getCalendarDatesForMonth(currentYear - 1, LAST_MONTH_INDEX);
 	}
+
 	return getCalendarDatesForMonth(currentYear, currentMonth - 1);
 };
 
 const getNextMonthCalendarDates = (currentMonth: number, currentYear: number) => {
-	if (currentMonth === 11) {
-		return getCalendarDatesForMonth(currentYear + 1, 0);
+	if (currentMonth === LAST_MONTH_INDEX) {
+		return getCalendarDatesForMonth(currentYear + 1, FIRST_MONTH_INDEX);
 	}
+
 	return getCalendarDatesForMonth(currentYear, currentMonth + 1);
 };
 

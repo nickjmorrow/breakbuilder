@@ -35,6 +35,7 @@ export const SeasonalWeighting: React.FC<{ style?: React.CSSProperties }> = ({ s
 			{seasonInfos.map((s, i) => {
 				return (
 					<div
+						key={s.label}
 						style={{
 							width: '100%',
 							display: 'flex',

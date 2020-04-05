@@ -9,6 +9,8 @@ import { getEmptyDate } from 'dateTypeProviders/getEmptyDate';
 import { getUpdatedConnectedDates } from 'utilities/getUpdatedConnectedDates';
 import { getCurrentYear } from 'utilities/dateUtilities/getCurrentYear';
 import { isEmptyDate } from 'typeGuards/isEmptyDate';
+import { getHolidayDate } from 'dateTypeProviders/getHolidayDate';
+import { isHolidayDate } from 'typeGuards/isHolidayDate';
 
 export type UiState = Readonly<typeof initialState>;
 
@@ -49,7 +51,7 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 				);
 				const foundDate = draftState.calendarDates[foundDateIndex];
 
-				if (!isEmptyDate(foundDate) && !isSelectedDate(foundDate)) {
+				if (!isEmptyDate(foundDate) && !isSelectedDate(foundDate) && !isHolidayDate(foundDate)) {
 					throw new Error('Unexpected date type was toggled.');
 				}
 
@@ -58,6 +60,8 @@ export const uiReducer = (state: UiState = initialState, action: ActionType<type
 						case 'empty':
 							return getSelectedDate(date);
 						case 'selected':
+							return getHolidayDate(date);
+						case 'holiday':
 							return getEmptyDate(date);
 						default:
 							throw new Error('Should never get here.');

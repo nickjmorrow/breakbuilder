@@ -4,6 +4,7 @@ import { SelectedDate } from 'types/SelectedDate';
 import { SaveResponse } from 'types/SaveResponse';
 import { VacationPlanModel } from 'types/apiContracts/VacationPlanModel';
 import { CreateVacationPlanRequestModel } from 'types/apiContracts/CreateVacationPlanRequestModel';
+import { HolidayDate } from 'types/HolidayDate';
 
 export enum UiActionKeys {
 	ADD_DATE = 'ADD_DATE',
@@ -27,7 +28,7 @@ const addDate = (date: EmptyDate) => action(UiActionKeys.ADD_DATE, date);
 
 const removeDate = (date: SelectedDate) => action(UiActionKeys.REMOVE_DATE, date);
 
-const toggleDate = (date: EmptyDate | SelectedDate) => action(UiActionKeys.TOGGLE_DATE, date);
+const toggleDate = (date: EmptyDate | SelectedDate | HolidayDate) => action(UiActionKeys.TOGGLE_DATE, date);
 
 const setYear = (year: number) => action(UiActionKeys.SET_YEAR, year);
 

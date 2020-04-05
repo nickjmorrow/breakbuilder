@@ -20,7 +20,6 @@ export const getCalendarDatesForMonth = (year: number, month: number): EmptyDate
 
 	const calendarDates = days.filter(isIntermediateShape).map(toCalendarDate);
 
-	console.log(calendarDates);
 	return calendarDates;
 };
 

@@ -24,7 +24,7 @@ export const DateTypeComparison: React.FC = () => {
 	return (
 		<BallContainer>
 			{data.map(d => (
-				<div>
+				<div key={d.label}>
 					<Typography colorVariant={'primaryLight'}>{d.label}</Typography>
 					<Ball backgroundColor={getBackgroundColor(d, data)}>
 						<TextWrapper>
