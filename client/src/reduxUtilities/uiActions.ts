@@ -55,8 +55,6 @@ const getVacationPlan = {
 	failure: (message: string) => action(UiActionKeys.GET_VACATION_PLAN_FAILURE, message),
 };
 
-type GetVacationPlanSuccess = typeof getVacationPlan.success;
-
 export const uiActions = {
 	addDate,
 	removeDate,
