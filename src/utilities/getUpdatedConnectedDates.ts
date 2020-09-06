@@ -6,49 +6,50 @@ import { WrappedDate } from '~/types/WrappedDate';
 import { getEmptyDate } from '~/dateTypeProviders/getEmptyDate';
 import { isCalendarDateEqual } from '~/utilities/isCalendarDateEqual';
 import { isVacationDate } from '~/typeGuards/isVacationDate';
+import { isSelectedOrHolidayDate } from '~/typeGuards/isSelectedOrHolidayDate';
+import { isEmptyDate } from '~/typeGuards/isEmptyDate';
 
 export const getUpdatedConnectedDates = (dates: CalendarDate[]): CalendarDate[] => {
-    const inputDates = dates.map(d => (isConnectedDate(d) ? getEmptyDate(d) : d));
-    const connectedDates: ConnectedDate[] = [];
-
-    const alreadyExists = (newDate: WrappedDate) => connectedDates.some(cd => isCalendarDateEqual(cd, newDate));
-    const asConnectedDate = (calendarDate: WrappedDate): ConnectedDate => ({ ...calendarDate, type: 'connected' });
-    const addIfNotExists = (newDate: WrappedDate) =>
-        !alreadyExists(newDate) && connectedDates.push(asConnectedDate(newDate));
-
-    inputDates
-        .filter(d => isVacationDate(d))
-        .forEach(d => {
-            if (d.date.getDay() === 5) {
-                addIfNotExists({ date: getOffsetDate(d.date, 1) });
-                addIfNotExists({ date: getOffsetDate(d.date, 2) });
-            }
-            if (d.date.getDay() === 1) {
-                addIfNotExists({ date: getOffsetDate(d.date, -1) });
-                addIfNotExists({ date: getOffsetDate(d.date, -2) });
-            }
-        });
-
-    const isNewConnectedDate = (date: CalendarDate) => connectedDates.some(cd => isCalendarDateEqual(cd, date));
-
-    const convertDate = (date: CalendarDate): CalendarDate => {
-        if (isNewConnectedDate(date)) {
-            return getConnectedDate(date);
+    const updatedDates = dates.map((d, i) => {
+        if (!isConnectedDate(d) && !isEmptyDate(d)) {
+            return d;
         }
 
-        // was connected, now it is empty
-        if (isConnectedDate(date)) {
-            return getEmptyDate(date);
+        if (shouldBeConnected(i, dates)) {
+            d.type = 'connected';
+        } else {
+            d.type = 'empty';
         }
-
-        return date;
-    };
-
-    return inputDates.map(convertDate);
+        return d;
+    });
+    return updatedDates;
 };
 
-const getOffsetDate = (date: Date, offset: number): Date => {
-    const newDate = new Date(date);
-    newDate.setUTCDate(date.getUTCDate() + offset);
-    return newDate;
+const shouldBeConnected = (index: number, allDates: CalendarDate[]): boolean => {
+    const calendarDate = allDates[index];
+    const day = calendarDate.date.getDay();
+
+    if (day !== 0 && day !== 6) {
+        return false;
+    }
+
+    if (!isConnectedDate(calendarDate) && !isEmptyDate(calendarDate)) {
+        return false;
+    }
+
+    const isSaturdayAndConnected =
+        (day === 6 && safeGetIsFilledDay(index - 1, allDates)) || safeGetIsFilledDay(index + 2, allDates);
+    const isSundayAndConnected =
+        (day === 0 && safeGetIsFilledDay(index - 2, allDates)) || safeGetIsFilledDay(index + 1, allDates);
+
+    return isSaturdayAndConnected || isSundayAndConnected;
+};
+
+const safeGetIsFilledDay = (index: number, allDates: CalendarDate[]): boolean => {
+    if (index < 0 || index >= allDates.length) {
+        return false;
+    }
+
+    const calendarDate = allDates[index];
+    return isSelectedOrHolidayDate(calendarDate);
 };

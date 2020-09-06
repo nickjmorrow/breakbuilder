@@ -11,11 +11,16 @@ import { DAYS_OF_WEEK } from '~/core/constants/daysOfWeek';
 import { FIRST_MONTH_INDEX } from '~/core/constants/firstMonthIndex';
 import { LAST_MONTH_INDEX } from '~/core/constants/lastMonthIndex';
 import { REQUIRED_DAYS_IN_CALENDAR } from '~/core/constants/requiredDaysInCalendar';
+import { EmptyDate } from '~/types/EmptyDate';
+import { SelectedDate } from '~/types/SelectedDate';
+import { HolidayDate } from '~/types/HolidayDate';
 
 export const Calendar: React.FC = () => {
     const dispatch = useDispatch();
 
     const setMonth = (month: number) => dispatch(uiActions.setMonth(month));
+    const toggleDate = (calendarDate: EmptyDate | SelectedDate | HolidayDate) =>
+        dispatch(uiActions.toggleDate(calendarDate));
 
     const currentMonth = useSelector((state: RootState) => state.ui.currentMonth);
     const currentYear = useSelector((state: RootState) => state.ui.currentYear);
@@ -44,7 +49,7 @@ export const Calendar: React.FC = () => {
                 ))}
 
                 {getPaddedCalendarDates(calendarDates, currentMonth, currentYear).map((d, i) => (
-                    <CalendarEntry key={i} calendarDate={d} />
+                    <CalendarEntry key={i} calendarDate={d} setMonth={setMonth} toggleDate={toggleDate} isInCurrentMonth={d.date.getMonth() === currentMonth} />
                 ))}
             </InnerCalendar>
         </StyledCalendar>
@@ -53,6 +58,7 @@ export const Calendar: React.FC = () => {
 
 // utilities
 const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: number, currentYear: number) => {
+    // const t0 = performance.now();
     const currentMonthDates = calendarDates.filter(
         cd => cd.date.getMonth() === currentMonth && cd.date.getFullYear() === currentYear,
     );
@@ -82,6 +88,7 @@ const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: num
             return nextMonthCalendarDates[nextMonthDateIndex];
         });
 
+    // console.log(performance.now() - t0);
     return [...previousDates, ...currentMonthDates, ...nextDates];
 };
 

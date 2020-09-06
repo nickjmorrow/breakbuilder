@@ -5,10 +5,11 @@ import { rootReducer } from '~/reduxUtilities/rootReducer';
 import { AppState } from '~/reduxUtilities/AppState';
 import { routerMiddleware } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
+import { localStorageManager } from '~/reduxUtilities/localStorageManager';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const configureStore = (initialState: AppState) => {
+const configureStore = (initialState: AppState | undefined) => {
     const middleware = [sagaMiddleware, routerMiddleware(createBrowserHistory())];
 
     // In development, use the browser's Redux dev tools extension if installed
@@ -29,6 +30,15 @@ const configureStore = (initialState: AppState) => {
     return intermediateStore;
 };
 
-const store = configureStore((window as any).initialReduxState);
+const uiState = localStorageManager.getState();
+
+const initialState = uiState !== null ? { ui: uiState } : undefined;
+
+const store = configureStore(initialState);
+
+store.subscribe(() => {
+    const state = store.getState().ui;
+    localStorageManager.setState(state);
+});
 
 export { store };

@@ -1,28 +1,10 @@
-import { Main } from '~/components/Main';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { RootState } from '~/reduxUtilities/rootReducer';
-import { uiActions } from '~/reduxUtilities/uiActions';
-import { getVacationPlanUrl } from '~/utilities/getVacationPlanUrl';
-import { ThemeProvider } from '~/theming/ThemeProvider';
 import 'normalize.css';
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Main } from '~/components/Main';
+import { ThemeProvider } from '~/theming/ThemeProvider';
 
 const AppInternal: React.FC<RouteComponentProps> = ({ location }) => {
-    const { getVacationPlanSuccess } = useSelector((state: RootState) => state.ui);
-    const dispatch = useDispatch();
-
-    const { pathname } = location;
-
-    const url = getVacationPlanUrl(pathname);
-
-    const mayBeSavedVacationPlan = url !== '';
-
-    // check if url exists in database
-    if (mayBeSavedVacationPlan && getVacationPlanSuccess === null) {
-        dispatch(uiActions.getVacationPlan.request(url));
-    }
-
     return (
         <div className="App">
             <ThemeProvider>
