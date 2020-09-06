@@ -1,0 +1,85 @@
+{
+    "name": "beginning",
+    "version": "0.0.1",
+    "description": "",
+    "scripts": {
+        "dev": "webpack-dev-server",
+        "build": "webpack --config ./webpack.prod.js --mode production",
+        "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix",
+        "lint:css": "stylelint './src/**/*.tsx'",
+        "test": "jest",
+        "format": "prettier --write '*/**/*.{ts,tsx}'",
+        "ci:preflight": "npm run format && npm run lint && npm run build && npm run test",
+        "depgraph": "depcruise --include-only '^src' --output-type dot src | dot -T svg > dependencygraph.svg"
+    },
+    "resolutions": {
+        "acorn": "npm:acorn-with-stage3"
+    },
+    "dependencies": {
+        "@nickjmorrow/react-component-library": "0.0.59",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "@types/jest": "^24.0.0",
+        "@types/node": "^12.0.0",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.9.0",
+        "axios": "^0.19.1",
+        "calendar-base": "^0.3.0",
+        "circular-dependency-plugin": "^5.2.0",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^6.1.0",
+        "date-holidays": "^1.4.14",
+        "history": "^4.10.1",
+        "html-webpack-plugin": "^4.4.1",
+        "immer": "^5.3.2",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "react-redux": "^7.1.3",
+        "react-router": "^5.1.2",
+        "react-router-dom": "^5.1.2",
+        "react-router-redux": "^4.0.8",
+        "react-scripts": "3.3.0",
+        "redux": "^4.0.5",
+        "redux-saga": "^1.1.3",
+        "reselect": "^4.0.0",
+        "styled-components": "^5.0.0",
+        "ts-essentials": "^4.0.0",
+        "tsconfig-paths-jest": "0.0.1",
+        "typesafe-actions": "^5.1.0",
+        "webpack": "^4.44.1"
+    },
+    "devDependencies": {
+        "@types/history": "^4.7.4",
+        "@types/react-redux": "^7.1.6",
+        "@types/react-router": "^5.1.4",
+        "@types/react-router-dom": "^5.1.3",
+        "@types/react-router-redux": "^5.0.18",
+        "@types/redux": "^3.6.0",
+        "@types/redux-saga": "^0.10.5",
+        "@types/styled-components": "^4.4.2",
+        "@typescript-eslint/eslint-plugin": "^2.16.0",
+        "@typescript-eslint/parser": "^2.16.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-react": "^7.18.0",
+        "husky": "^4.0.10",
+        "identity-obj-proxy": "^3.0.0",
+        "prettier": "^1.19.1",
+        "prettier-eslint": "^9.0.1",
+        "react-test-renderer": "^16.12.0",
+        "typescript": "^3.7.5",
+        "webpack-cli": "^3.3.12"
+    },
+    "license": "MIT",
+    "jest": {
+        "moduleDirectories": [
+            "node_modules",
+            "src"
+        ],
+        "moduleNameMapper": {
+            "~/(.*)": "<rootDir>/src/$1"
+        }
+    }
+}
