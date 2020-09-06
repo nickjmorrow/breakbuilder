@@ -46,4 +46,5 @@ jobs:
                   at: ./
             - run:
                   name: Netlify Deploy
-                  command: node_modules/.bin/netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --prod --dir prod
+                  command: ls
+                  # command: node_modules/.bin/netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --prod --dir prod
