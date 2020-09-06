@@ -1,20 +1,18 @@
+// external
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
 import { Provider } from 'react-redux';
-import axios from 'axios';
-import { store } from '~/reduxUtilities/store';
-import { getBaseUrl } from '~/utilities/getBaseUrl';
-import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
 
-axios.defaults.baseURL = getBaseUrl();
+// inter
+import { App } from '~/App';
+import { store } from '~/reduxUtilities/store';
+import { ThemeProvider } from '~/theming/ThemeProvider';
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={createBrowserHistory()}>
+        <ThemeProvider>
             <App />
-        </Router>
+        </ThemeProvider>
     </Provider>,
     document.getElementById('root'),
 );

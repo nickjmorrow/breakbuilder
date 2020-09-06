@@ -1,17 +1,10 @@
-import 'normalize.css';
+// external
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Main } from '~/components/Main';
-import { ThemeProvider } from '~/theming/ThemeProvider';
+import 'normalize.css';
 
-const AppInternal: React.FC<RouteComponentProps> = ({ location }) => {
-    return (
-        <div className="App">
-            <ThemeProvider>
-                <Main />
-            </ThemeProvider>
-        </div>
-    );
+// inter
+import { Main } from '~/landing/Main';
+
+export const App: React.FC = () => {
+    return <Main />;
 };
-
-export const App = withRouter(AppInternal);
