@@ -1,6 +1,6 @@
-import { AppState } from 'reduxUtilities/AppState';
+import { AppState } from '~/reduxUtilities/AppState';
 import { createSelector } from 'reselect';
-import { isSelectedDate } from 'typeGuards/isSelectedDate';
+import { isSelectedDate } from '~/typeGuards/isSelectedDate';
 
 const getUiSlice = (state: AppState) => state.ui;
 

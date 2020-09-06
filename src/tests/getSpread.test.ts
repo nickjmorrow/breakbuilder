@@ -1,5 +1,5 @@
-import { getSpread } from 'utilities/evenSelectionCreation/getSpread';
-import { getBooleanArrayFromBinaryString } from 'utilities/testUtilities/getBooleanArrayFromBinaryString';
+import { getSpread } from '~/utilities/evenSelectionCreation/getSpread';
+import { getBooleanArrayFromBinaryString } from '~/utilities/testUtilities/getBooleanArrayFromBinaryString';
 
 describe('getSpread', () => {
 	it('handles 1000100001', () => {

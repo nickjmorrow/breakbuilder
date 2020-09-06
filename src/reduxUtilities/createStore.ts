@@ -1,5 +1,5 @@
 import { createStore as reduxCreateStore } from 'redux';
-import { rootReducer } from 'reduxUtilities/rootReducer';
+import { rootReducer } from '~/reduxUtilities/rootReducer';
 
 const getWindow = () => {
 	if (typeof window !== 'undefined') {

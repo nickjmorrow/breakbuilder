@@ -1,4 +1,4 @@
-import { addEntriesToSelection } from 'utilities/assignVacationToSegment';
+import { addEntriesToSelection } from '~/utilities/assignVacationToSegment';
 
 const getInput = (arrayLength: number) => Array(arrayLength).fill(false);
 

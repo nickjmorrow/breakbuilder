@@ -1,4 +1,4 @@
-import { Throw } from 'utilities/Throw';
+import { Throw } from '~/utilities/Throw';
 
 export const getGaps = (distribution: boolean[]): number[] => {
 	const numAssignments = distribution.reduce((agg, cur) => {

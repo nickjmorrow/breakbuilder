@@ -1,5 +1,5 @@
 import { Calendar as CalendarUtil } from 'calendar-base';
-import { EmptyDate } from 'types/EmptyDate';
+import { EmptyDate } from '~/types/EmptyDate';
 
 export const getCalendarDatesForMonth = (year: number, month: number): EmptyDate[] => {
 	const calendarUtil = new CalendarUtil();

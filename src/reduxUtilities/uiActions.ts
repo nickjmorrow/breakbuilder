@@ -1,10 +1,10 @@
 import { action } from 'typesafe-actions';
-import { EmptyDate } from 'types/EmptyDate';
-import { SelectedDate } from 'types/SelectedDate';
-import { SaveResponse } from 'types/SaveResponse';
-import { VacationPlanModel } from 'types/apiContracts/VacationPlanModel';
-import { CreateVacationPlanRequestModel } from 'types/apiContracts/CreateVacationPlanRequestModel';
-import { HolidayDate } from 'types/HolidayDate';
+import { EmptyDate } from '~/types/EmptyDate';
+import { SelectedDate } from '~/types/SelectedDate';
+import { SaveResponse } from '~/types/SaveResponse';
+import { VacationPlanModel } from '~/types/apiContracts/VacationPlanModel';
+import { CreateVacationPlanRequestModel } from '~/types/apiContracts/CreateVacationPlanRequestModel';
+import { HolidayDate } from '~/types/HolidayDate';
 
 export enum UiActionKeys {
 	ADD_DATE = 'ADD_DATE',

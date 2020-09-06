@@ -1,4 +1,4 @@
-import { CalendarDate } from 'types/CalendarDate';
+import { CalendarDate } from '~/types/CalendarDate';
 
 export interface CreateVacationPlanRequestModel {
 	calendarDates: CalendarDate[];

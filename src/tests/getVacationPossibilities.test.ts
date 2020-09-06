@@ -1,4 +1,4 @@
-import { getSelectionPossibilities } from 'utilities/evenSelectionCreation/getSelectionPossibilities';
+import { getSelectionPossibilities } from '~/utilities/evenSelectionCreation/getSelectionPossibilities';
 
 const getInput = (arrayLength: number) => Array(arrayLength).fill(false);
 

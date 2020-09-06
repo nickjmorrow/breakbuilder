@@ -1,4 +1,4 @@
-import { HolidayDate } from 'types/HolidayDate';
+import { HolidayDate } from '~/types/HolidayDate';
 
 export const holidayDates: HolidayDate[] = [
 	{

@@ -1,4 +1,4 @@
-import { WrappedDate } from 'types/WrappedDate';
+import { WrappedDate } from '~/types/WrappedDate';
 
 export interface ConnectedDate extends WrappedDate {
 	type: 'connected';

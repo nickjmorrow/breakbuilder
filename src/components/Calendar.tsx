@@ -1,123 +1,132 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useThemeContext, Typography, ChevronUpIcon, Theme } from '@nickjmorrow/react-component-library';
-import { uiActions } from 'reduxUtilities/uiActions';
-import { CalendarEntry } from 'components/CalendarEntry';
-import { CalendarDate } from 'types/CalendarDate';
-import { RootState } from 'reduxUtilities/rootReducer';
-import { getCalendarDatesForMonth } from 'utilities/getCalendarDatesForMonth';
-import { MONTH_NAMES } from 'core/constants/monthNames';
-import { DAYS_OF_WEEK } from 'core/constants/daysOfWeek';
-import { FIRST_MONTH_INDEX } from 'core/constants/firstMonthIndex';
-import { LAST_MONTH_INDEX } from 'core/constants/lastMonthIndex';
-import { REQUIRED_DAYS_IN_CALENDAR } from 'core/constants/requiredDaysInCalendar';
+import { Typography, ChevronUpIcon } from '~/core';
+import { uiActions } from '~/reduxUtilities/uiActions';
+import { CalendarEntry } from '~/components/CalendarEntry';
+import { CalendarDate } from '~/types/CalendarDate';
+import { RootState } from '~/reduxUtilities/rootReducer';
+import { MONTH_NAMES } from '~/core/constants/monthNames';
+import { DAYS_OF_WEEK } from '~/core/constants/daysOfWeek';
+import { FIRST_MONTH_INDEX } from '~/core/constants/firstMonthIndex';
+import { LAST_MONTH_INDEX } from '~/core/constants/lastMonthIndex';
+import { REQUIRED_DAYS_IN_CALENDAR } from '~/core/constants/requiredDaysInCalendar';
 
 export const Calendar: React.FC = () => {
-	const theme = useThemeContext();
+    const dispatch = useDispatch();
 
-	const dispatch = useDispatch();
+    const setMonth = (month: number) => dispatch(uiActions.setMonth(month));
 
-	const setMonth = (month: number) => dispatch(uiActions.setMonth(month));
+    const currentMonth = useSelector((state: RootState) => state.ui.currentMonth);
+    const currentYear = useSelector((state: RootState) => state.ui.currentYear);
+    const calendarDates = useSelector((state: RootState) => state.ui.calendarDates);
 
-	const currentMonth = useSelector((state: RootState) => state.ui.currentMonth);
-	const currentYear = useSelector((state: RootState) => state.ui.currentYear);
-	const calendarDates = useSelector((state: RootState) => state.ui.calendarDates);
+    return (
+        <StyledCalendar>
+            <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}
+            >
+                <ChevronUpIcon
+                    onClick={() => setMonth(currentMonth - 1)}
+                    style={{ cursor: 'pointer', transform: 'rotate(-90deg)' }}
+                />
+                <Typography colorVariant={'primaryLight'}>{MONTH_NAMES[currentMonth]}</Typography>
+                <ChevronUpIcon
+                    style={{ cursor: 'pointer', transform: 'rotate(90deg)' }}
+                    onClick={() => setMonth(currentMonth + 1)}
+                />
+            </div>
+            <InnerCalendar>
+                {DAYS_OF_WEEK.map(d => (
+                    <div key={d} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Typography colorVariant={'primaryLight'}>{d}</Typography>
+                    </div>
+                ))}
 
-	return (
-		<StyledCalendar theme={theme}>
-			<div
-				style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}
-			>
-				<ChevronUpIcon
-					onClick={() => setMonth(Math.max(FIRST_MONTH_INDEX, currentMonth - 1))}
-					style={{ transform: 'rotate(-90deg)', cursor: 'pointer' }}
-					colorVariant={'primaryLight'}
-				/>
-				<Typography colorVariant={'primaryLight'} sizeVariant={5}>
-					{MONTH_NAMES[currentMonth]}
-				</Typography>
-				<ChevronUpIcon
-					style={{ transform: 'rotate(90deg)', cursor: 'pointer' }}
-					onClick={() => setMonth(Math.min(LAST_MONTH_INDEX, currentMonth + 1))}
-					colorVariant={'primaryLight'}
-				/>
-			</div>
-			<InnerCalendar theme={theme}>
-				{DAYS_OF_WEEK.map(d => (
-					<div key={d} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-						<Typography sizeVariant={1} colorVariant={'primaryLight'}>
-							{d}
-						</Typography>
-					</div>
-				))}
-
-				{getPaddedCalendarDates(calendarDates, currentMonth, currentYear).map((d, i) => (
-					<CalendarEntry key={i} calendarDate={d} />
-				))}
-			</InnerCalendar>
-		</StyledCalendar>
-	);
+                {getPaddedCalendarDates(calendarDates, currentMonth, currentYear).map((d, i) => (
+                    <CalendarEntry key={i} calendarDate={d} />
+                ))}
+            </InnerCalendar>
+        </StyledCalendar>
+    );
 };
 
 // utilities
 const getPaddedCalendarDates = (calendarDates: CalendarDate[], currentMonth: number, currentYear: number) => {
-	const monthDates = calendarDates.filter(cd => cd.date.getMonth() === currentMonth);
+    const currentMonthDates = calendarDates.filter(
+        cd => cd.date.getMonth() === currentMonth && cd.date.getFullYear() === currentYear,
+    );
 
-	const firstDayOfMonth = monthDates[0].date.getDay();
+    const firstDayOfMonth = currentMonthDates[0].date.getDay();
 
-	const numPreviousPaddingDays = firstDayOfMonth;
+    const numPreviousPaddingDays = firstDayOfMonth;
 
-	const previousMonthDays = getPreviousMonthCalendarDates(currentMonth, currentYear);
+    const previousMonthDays = getPreviousMonthCalendarDates(calendarDates, currentMonth, currentYear);
 
-	const previousDates = Array(numPreviousPaddingDays)
-		.fill(null)
-		.map((d, i) => {
-			const previousMonthDateIndex = previousMonthDays.length - 1 - i;
-			return previousMonthDays[previousMonthDateIndex];
-		})
-		.reverse();
+    const previousDates = Array(numPreviousPaddingDays)
+        .fill(null)
+        .map((d, i) => {
+            const previousMonthDateIndex = previousMonthDays.length - 1 - i;
+            return previousMonthDays[previousMonthDateIndex];
+        })
+        .reverse();
 
-	const nextMonthCalendarDates = getNextMonthCalendarDates(currentMonth, currentYear);
+    const nextMonthCalendarDates = getNextMonthCalendarDates(calendarDates, currentMonth, currentYear);
 
-	const numNextPaddingDays = REQUIRED_DAYS_IN_CALENDAR - (previousDates.length + monthDates.length);
+    const numNextPaddingDays = REQUIRED_DAYS_IN_CALENDAR - (previousDates.length + currentMonthDates.length);
 
-	const nextDates = Array(numNextPaddingDays)
-		.fill(null)
-		.map((d, i) => {
-			const nextMonthDateIndex = i;
-			return nextMonthCalendarDates[nextMonthDateIndex];
-		});
+    const nextDates = Array(numNextPaddingDays)
+        .fill(null)
+        .map((d, i) => {
+            const nextMonthDateIndex = i;
+            return nextMonthCalendarDates[nextMonthDateIndex];
+        });
 
-	return [...previousDates, ...monthDates, ...nextDates];
+    return [...previousDates, ...currentMonthDates, ...nextDates];
 };
 
-const getPreviousMonthCalendarDates = (currentMonth: number, currentYear: number) => {
-	if (currentMonth === FIRST_MONTH_INDEX) {
-		return getCalendarDatesForMonth(currentYear - 1, LAST_MONTH_INDEX);
-	}
+const getPreviousMonthCalendarDates = (
+    calendarDates: CalendarDate[],
+    currentMonth: number,
+    currentYear: number,
+): CalendarDate[] => {
+    if (currentMonth === FIRST_MONTH_INDEX) {
+        return getCalendarDatesForMonth(calendarDates, LAST_MONTH_INDEX, currentYear - 1);
+    }
 
-	return getCalendarDatesForMonth(currentYear, currentMonth - 1);
+    return getCalendarDatesForMonth(calendarDates, currentMonth - 1, currentYear);
 };
 
-const getNextMonthCalendarDates = (currentMonth: number, currentYear: number) => {
-	if (currentMonth === LAST_MONTH_INDEX) {
-		return getCalendarDatesForMonth(currentYear + 1, FIRST_MONTH_INDEX);
-	}
+const getNextMonthCalendarDates = (
+    calendarDates: CalendarDate[],
+    currentMonth: number,
+    currentYear: number,
+): CalendarDate[] => {
+    if (currentMonth === LAST_MONTH_INDEX) {
+        return getCalendarDatesForMonth(calendarDates, FIRST_MONTH_INDEX, currentYear + 1);
+    }
 
-	return getCalendarDatesForMonth(currentYear, currentMonth + 1);
+    return getCalendarDatesForMonth(calendarDates, currentMonth + 1, currentYear);
+};
+
+const getCalendarDatesForMonth = (
+    calendarDates: CalendarDate[],
+    currentMonth: number,
+    currentYear: number,
+): CalendarDate[] => {
+    return calendarDates.filter(cd => cd.date.getMonth() === currentMonth && cd.date.getFullYear() === currentYear);
 };
 
 // css
-const StyledCalendar = styled('div')<{ theme: Theme }>`
-	background-color: hsla(0, 0%, 90%, 0.2);
-	border-radius: ${p => p.theme.border.borderRadius.br1};
-	padding: ${p => p.theme.spacing.ss4};
+const StyledCalendar = styled('div')`
+    background-color: hsla(0, 0%, 90%, 0.2);
+    border-radius: ${p => p.theme.borderRadius.br1};
+    padding: ${p => p.theme.spacing.ss4};
 `;
 
-const InnerCalendar = styled('div')<{ theme: Theme }>`
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-	width: min-content;
-	height: 360px;
+const InnerCalendar = styled('div')`
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: min-content;
+    height: 360px;
 `;

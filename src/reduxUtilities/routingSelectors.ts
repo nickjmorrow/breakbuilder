@@ -1,4 +1,4 @@
-import { RootState } from 'reduxUtilities/rootReducer';
+import { RootState } from '~/reduxUtilities/rootReducer';
 import { createSelector } from 'reselect';
 
 export const getRoutingSlice = (state: RootState) => state.routing;

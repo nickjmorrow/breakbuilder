@@ -1,5 +1,5 @@
-import { getSelectionPossibilities } from 'utilities/evenSelectionCreation/getSelectionPossibilities';
-import { getSpread } from 'utilities/evenSelectionCreation/getSpread';
+import { getSelectionPossibilities } from '~/utilities/evenSelectionCreation/getSelectionPossibilities';
+import { getSpread } from '~/utilities/evenSelectionCreation/getSpread';
 
 export const getMostEvenSelection = (input: boolean[], numAdditionalEntries: number): boolean[] => {
 	const possibilities = getSelectionPossibilities(input, numAdditionalEntries);

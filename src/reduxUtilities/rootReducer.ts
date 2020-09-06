@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { uiReducer } from 'reduxUtilities/uiReducer';
+import { uiReducer } from '~/reduxUtilities/uiReducer';
 import { routerReducer } from 'react-router-redux';
 
 export const rootReducer = combineReducers({

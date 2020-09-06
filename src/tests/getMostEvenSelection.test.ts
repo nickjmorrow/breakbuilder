@@ -1,4 +1,4 @@
-import { getMostEvenSelection } from 'utilities/evenSelectionCreation/getMostEvenSelection';
+import { getMostEvenSelection } from '~/utilities/evenSelectionCreation/getMostEvenSelection';
 
 const getInput = (arrayLength: number): false[] => Array(arrayLength).fill(false);
 
