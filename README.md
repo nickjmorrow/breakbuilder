@@ -15,19 +15,19 @@ I wasn't pumped about the "I want to schedule my vacation and see how evenly-spr
 
 It's solely a React app. To start the webpack development server, run the following:
 
-```
+```bash
 npm run dev
 ```
 
 To run tests:
 
-```
+```bash
 npm test
 ```
 
 To run other CI preflight checks (linting, formatting):
 
-```
+```bash
 npm run ci:preflight
 ```
 

@@ -1,18 +1,15 @@
 // external
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { Typography } from '~/core';
-import { InteractionState } from '~/core/InteractionState';
-import { Theme } from '~/theming';
+import { calendarActions } from '~/calendar/state/calendarActions';
 import { isConnectedDate } from '~/calendar/typeGuards/isConnectedDate';
 import { isHolidayDate } from '~/calendar/typeGuards/isHolidayDate';
 import { isSelectedDate } from '~/calendar/typeGuards/isSelectedDate';
 import { CalendarDate } from '~/calendar/types/CalendarDate';
-import { EmptyDate } from '~/calendar/types/EmptyDate';
-import { HolidayDate } from '~/calendar/types/HolidayDate';
-import { SelectedDate } from '~/calendar/types/SelectedDate';
 import { isWeekend } from '~/calendar/utilities/isWeekend';
-import { calendarActions } from '~/calendar/state/calendarActions';
+import { Typography } from '~/core';
+import { InteractionState } from '~/core/InteractionState';
+import { Theme } from '~/theming';
 
 const CalendarEntryInternal: React.FC<{
     calendarDate: CalendarDate;
@@ -38,7 +35,7 @@ const CalendarEntryInternal: React.FC<{
             }}
         >
             <HolidaySection
-                isHovering={isHovering && !isConnectedDate(calendarDate)}
+                isHovering={isHovering && !isWeekend(calendarDate)}
                 onClick={e => {
                     e.stopPropagation();
                     if (isConnectedDate(calendarDate)) {

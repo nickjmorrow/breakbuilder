@@ -5,9 +5,11 @@ import { isSelectedDate } from '~/calendar/typeGuards/isSelectedDate';
 import { isConnectedDate } from '~/calendar/typeGuards/isConnectedDate';
 import { isHolidayDate } from '~/calendar/typeGuards/isHolidayDate';
 
-const currentYearSelector = (state: AppState) => state.ui.currentYear;
+const currentYearSelector = (state: AppState) => state.calendar.currentYear;
 
-const calendarDatesSelector = (state: AppState) => state.ui.calendarDates;
+const currentMonthSelector = (state: AppState) => state.calendar.currentMonth;
+
+const calendarDatesSelector = (state: AppState) => state.calendar.calendarDates;
 
 const currentYearDatesSelector = createSelector(
     currentYearSelector,
@@ -23,6 +25,7 @@ const currentYearHolidayDates = createSelector(currentYearDatesSelector, dates =
 
 export const calendarSelectors = {
     currentYearSelector,
+    currentMonthSelector,
     calendarDatesSelector,
     currentYearDatesSelector,
     currentYearSelectedDates,

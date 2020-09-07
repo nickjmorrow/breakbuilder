@@ -1,7 +1,7 @@
 import React from 'react';
-import { DateSelection } from '~/calendar/components/DateSelection';
 import styled, { keyframes } from 'styled-components';
 import { GithubIcon } from '@nickjmorrow/react-component-library';
+import { DateSelection } from '~/calendar/components/DateSelection';
 
 export const Main: React.FC = () => {
     return (

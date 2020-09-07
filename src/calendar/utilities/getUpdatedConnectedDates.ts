@@ -2,10 +2,11 @@ import { isConnectedDate } from '~/calendar/typeGuards/isConnectedDate';
 import { isEmptyDate } from '~/calendar/typeGuards/isEmptyDate';
 import { isSelectedOrHolidayDate } from '~/calendar/typeGuards/isSelectedOrHolidayDate';
 import { CalendarDate } from '~/calendar/types/CalendarDate';
+import { isWeekend } from '~/calendar/utilities/isWeekend';
 
 export const getUpdatedConnectedDates = (dates: CalendarDate[]): CalendarDate[] => {
     const updatedDates = dates.map((d, i) => {
-        if (!isConnectedDate(d) && !isEmptyDate(d)) {
+        if (!isWeekend(d) || (!isConnectedDate(d) && !isEmptyDate(d))) {
             return d;
         }
 
@@ -23,11 +24,7 @@ const shouldBeConnected = (index: number, allDates: CalendarDate[]): boolean => 
     const calendarDate = allDates[index];
     const day = calendarDate.date.getDay();
 
-    if (day !== 0 && day !== 6) {
-        return false;
-    }
-
-    if (!isConnectedDate(calendarDate) && !isEmptyDate(calendarDate)) {
+    if (!isWeekend(calendarDate) || (!isConnectedDate(calendarDate) && !isEmptyDate(calendarDate))) {
         return false;
     }
 

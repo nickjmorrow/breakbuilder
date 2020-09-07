@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Typography, ChevronUpIcon } from '~/core';
 import { calendarActions } from '~/calendar/state/calendarActions';
 import { CalendarEntry } from '~/calendar/components/CalendarEntry';
 import { CalendarDate } from '~/calendar/types/CalendarDate';
-import { RootState } from '~/reduxUtilities/rootReducer';
 import { MONTH_NAMES } from '~/core/constants/monthNames';
 import { DAYS_OF_WEEK } from '~/core/constants/daysOfWeek';
 import { FIRST_MONTH_INDEX } from '~/core/constants/firstMonthIndex';
@@ -14,6 +13,8 @@ import { REQUIRED_DAYS_IN_CALENDAR } from '~/core/constants/requiredDaysInCalend
 import { EmptyDate } from '~/calendar/types/EmptyDate';
 import { SelectedDate } from '~/calendar/types/SelectedDate';
 import { HolidayDate } from '~/calendar/types/HolidayDate';
+import { useTypedSelector } from '~/reduxUtilities/useTypedSelector';
+import { calendarSelectors } from '~/calendar/state/calendarSelectors';
 
 export const Calendar: React.FC = () => {
     const dispatch = useDispatch();
@@ -27,9 +28,9 @@ export const Calendar: React.FC = () => {
         target: 'selected' | 'holiday';
     }) => dispatch(calendarActions.toggleDate({ date, target }));
 
-    const currentMonth = useSelector((state: RootState) => state.ui.currentMonth);
-    const currentYear = useSelector((state: RootState) => state.ui.currentYear);
-    const calendarDates = useSelector((state: RootState) => state.ui.calendarDates);
+    const currentMonth = useTypedSelector(calendarSelectors.currentMonthSelector);
+    const currentYear = useTypedSelector(calendarSelectors.currentYearSelector);
+    const calendarDates = useTypedSelector(calendarSelectors.calendarDatesSelector);
 
     return (
         <StyledCalendar>

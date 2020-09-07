@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
-        "module": "esnext",
+        "module": "commonjs",
+        "target": "ES2019",
+        "lib": ["ESNext.Array", "dom", "dom.iterable", "ESNext", "ES2019"],
         "outDir": "dist/",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "target": "esnext",
         "allowJs": true,
         "checkJs": false,
         "jsx": "react",
@@ -15,7 +16,6 @@
         "strict": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
-        "lib": ["ESNext.Array", "dom", "dom.iterable", "ESNext"],
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
