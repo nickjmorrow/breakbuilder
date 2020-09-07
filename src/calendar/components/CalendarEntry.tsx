@@ -1,6 +1,6 @@
 // external
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Typography } from '~/core';
 import { InteractionState } from '~/core/InteractionState';
 import { Theme } from '~/theming';
@@ -12,15 +12,19 @@ import { EmptyDate } from '~/calendar/types/EmptyDate';
 import { HolidayDate } from '~/calendar/types/HolidayDate';
 import { SelectedDate } from '~/calendar/types/SelectedDate';
 import { isWeekend } from '~/calendar/utilities/isWeekend';
+import { calendarActions } from '~/calendar/state/calendarActions';
 
 const CalendarEntryInternal: React.FC<{
     calendarDate: CalendarDate;
     isInCurrentMonth: boolean;
     setMonth: (month: number) => void;
-    toggleDate: (calendarDate: EmptyDate | SelectedDate | HolidayDate) => void;
+    toggleDate: typeof calendarActions.toggleDate;
 }> = ({ calendarDate, toggleDate, setMonth, isInCurrentMonth }) => {
+    const [isHovering, setIsHovering] = React.useState(false);
     return (
         <StyledCalendarEntry
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
             calendarDate={calendarDate}
             onClick={() => {
                 if (isConnectedDate(calendarDate)) {
@@ -30,9 +34,22 @@ const CalendarEntryInternal: React.FC<{
                 if (!isInCurrentMonth) {
                     setMonth(calendarDate.date.getMonth());
                 }
-                toggleDate(calendarDate);
+                toggleDate({ date: calendarDate, target: 'selected' });
             }}
         >
+            <HolidaySection
+                isHovering={isHovering}
+                onClick={e => {
+                    e.stopPropagation();
+                    if (isConnectedDate(calendarDate)) {
+                        return;
+                    }
+                    if (!isInCurrentMonth) {
+                        setMonth(calendarDate.date.getMonth());
+                    }
+                    toggleDate({ date: calendarDate, target: 'holiday' });
+                }}
+            />
             <StyledTypography colorVariant={'primaryLight'} isInCurrentMonth={isInCurrentMonth}>
                 {calendarDate.date.getDate()}
             </StyledTypography>
@@ -52,6 +69,7 @@ const StyledTypography = styled(Typography)<{ isInCurrentMonth: boolean }>`
 const StyledCalendarEntry = styled.div<{
     calendarDate: CalendarDate;
 }>`
+    position: relative;
     width: 40px;
     height: 40px;
     margin: 4px;
@@ -72,6 +90,21 @@ const StyledCalendarEntry = styled.div<{
     }
 `;
 
+const HolidaySection = styled.div<{ isHovering: boolean }>`
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top-right-radius: ${p => p.theme.borderRadius.br1};
+    background-color: ${p => p.theme.accentColor.cs5};
+    width: 10px;
+    height: 10px;
+    transition: all ${p => p.theme.transitions.fast};
+    ${p => css`
+        visibility: ${p.isHovering ? 'normal' : 'hidden'};
+        transition: all ${p => p.theme.transitions.fast};
+    `}
+`;
+
 const lightness = 70.9;
 
 const getBackgroundColor = (uiState: InteractionState, calendarDate: CalendarDate, theme: Theme) => {
@@ -90,7 +123,7 @@ const getBackgroundColor = (uiState: InteractionState, calendarDate: CalendarDat
     }
 
     if (uiState === 'hover') {
-        return theme.accentColor.cs2;
+        return theme.coreColor.cs2;
     }
 
     return 'hsla(0, 0%, 100%, 0.7)';

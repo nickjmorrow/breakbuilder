@@ -19,8 +19,13 @@ export const Calendar: React.FC = () => {
     const dispatch = useDispatch();
 
     const setMonth = (month: number) => dispatch(calendarActions.setMonth(month));
-    const toggleDate = (calendarDate: EmptyDate | SelectedDate | HolidayDate) =>
-        dispatch(calendarActions.toggleDate(calendarDate));
+    const toggleDate = ({
+        date,
+        target,
+    }: {
+        date: EmptyDate | SelectedDate | HolidayDate;
+        target: 'selected' | 'holiday';
+    }) => dispatch(calendarActions.toggleDate({ date, target }));
 
     const currentMonth = useSelector((state: RootState) => state.ui.currentMonth);
     const currentYear = useSelector((state: RootState) => state.ui.currentYear);

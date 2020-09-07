@@ -1,5 +1,5 @@
 const defaultCorePaletteInputs = {
-    hue: 220, // hsl(220, 100%, 50%)
+    hue: 260, // hsl(260, 100%, 50%)
     middleLightness: 50,
     lightnessIncrement: 10,
     lightnessDecrement: 10,
@@ -10,7 +10,7 @@ const defaultCorePaletteInputs = {
 
 const defaultAccentPaletteInputs = {
     ...defaultCorePaletteInputs,
-    hue: 270, // hsl(270, 70%, 50%)
+    hue: 170, // hsl(170, 70%, 50%)
 };
 
 const defaultNeutralPaletteInputs = {

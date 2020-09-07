@@ -9,10 +9,11 @@ import { getEmptyDate } from '~/calendar/dateTypeProviders/getEmptyDate';
 import { getUpdatedConnectedDates } from '~/calendar/utilities/getUpdatedConnectedDates';
 import { getCurrentYear } from '~/calendar/utilities/getCurrentYear';
 import { isEmptyDate } from '~/calendar/typeGuards/isEmptyDate';
-import { getHolidayDate } from '~/calendar/dateTypeProviders/getHolidayDate';
 import { isHolidayDate } from '~/calendar/typeGuards/isHolidayDate';
 import { getCurrentMonth } from '~/calendar/utilities/getCurrentMonth';
 import { getConnectedDate } from '~/calendar/dateTypeProviders/getConnectedDate';
+import { CalendarDate } from '~/calendar/types/CalendarDate';
+import { getHolidayDate } from '~/calendar/dateTypeProviders/getHolidayDate';
 
 export type CalendarState = Readonly<typeof calendarInitialState>;
 
@@ -33,62 +34,15 @@ export const calendarReducer = (
     switch (action.type) {
         case CalendarActionKeys.TOGGLE_DATE:
             return produce(state, draftState => {
-                const t0 = performance.now();
-                const foundDateIndex = draftState.calendarDates.findIndex(sd =>
-                    isCalendarDateEqual(sd, action.payload),
-                );
+                const { date, target } = action.payload;
+                const foundDateIndex = draftState.calendarDates.findIndex(sd => isCalendarDateEqual(sd, date));
 
                 const foundDate = draftState.calendarDates[foundDateIndex];
 
                 if (!isEmptyDate(foundDate) && !isSelectedDate(foundDate) && !isHolidayDate(foundDate)) {
                     throw new Error('Unexpected date type was toggled.');
                 }
-
-                switch (foundDate.type) {
-                    case 'empty':
-                        draftState.calendarDates[foundDateIndex] = getSelectedDate(foundDate);
-                        if (foundDateIndex < 2 || foundDateIndex > draftState.calendarDates.length - 2) {
-                            return;
-                        }
-                        if (foundDate.date.getDay() === 5) {
-                            draftState.calendarDates[foundDateIndex + 1] = getConnectedDate(
-                                draftState.calendarDates[foundDateIndex + 1],
-                            );
-                            draftState.calendarDates[foundDateIndex + 2] = getConnectedDate(
-                                draftState.calendarDates[foundDateIndex + 2],
-                            );
-                        }
-                        if (foundDate.date.getDay() === 1) {
-                            draftState.calendarDates[foundDateIndex - 1] = getConnectedDate(
-                                draftState.calendarDates[foundDateIndex - 1],
-                            );
-                            draftState.calendarDates[foundDateIndex - 2] = getConnectedDate(
-                                draftState.calendarDates[foundDateIndex - 2],
-                            );
-                        }
-                        // console.log(performance.now() - t0);
-                        return;
-                    case 'selected':
-                        draftState.calendarDates[foundDateIndex] = getEmptyDate(foundDate);
-                        if (foundDate.date.getDay() === 5) {
-                            draftState.calendarDates[foundDateIndex + 1] = getEmptyDate(
-                                draftState.calendarDates[foundDateIndex + 1],
-                            );
-                            draftState.calendarDates[foundDateIndex + 2] = getEmptyDate(
-                                draftState.calendarDates[foundDateIndex + 2],
-                            );
-                        }
-                        if (foundDate.date.getDay() === 1) {
-                            draftState.calendarDates[foundDateIndex - 1] = getEmptyDate(
-                                draftState.calendarDates[foundDateIndex - 1],
-                            );
-                            draftState.calendarDates[foundDateIndex - 2] = getEmptyDate(
-                                draftState.calendarDates[foundDateIndex - 2],
-                            );
-                        }
-                        // console.log(performance.now() - t0);
-                        return;
-                }
+                updateConnectedDates(foundDate, foundDateIndex, draftState.calendarDates, target);
             });
         case CalendarActionKeys.SET_MONTH:
             return produce(state, draftState => {
@@ -127,5 +81,43 @@ export const calendarReducer = (
             });
         default:
             return state;
+    }
+};
+
+const updateConnectedDates = (
+    foundDate: CalendarDate,
+    foundDateIndex: number,
+    calendarDates: CalendarDate[],
+    target: 'selected' | 'holiday',
+) => {
+    switch (foundDate.type) {
+        case 'empty':
+            calendarDates[foundDateIndex] =
+                target === 'selected' ? getSelectedDate(foundDate) : getHolidayDate(foundDate);
+            if (foundDateIndex < 2 || foundDateIndex > calendarDates.length - 2) {
+                return;
+            }
+            if (foundDate.date.getDay() === 5) {
+                calendarDates[foundDateIndex + 1] = getConnectedDate(calendarDates[foundDateIndex + 1]);
+                calendarDates[foundDateIndex + 2] = getConnectedDate(calendarDates[foundDateIndex + 2]);
+            }
+            if (foundDate.date.getDay() === 1) {
+                calendarDates[foundDateIndex - 1] = getConnectedDate(calendarDates[foundDateIndex - 1]);
+                calendarDates[foundDateIndex - 2] = getConnectedDate(calendarDates[foundDateIndex - 2]);
+            }
+            return;
+        case 'selected':
+        case 'holiday':
+            calendarDates[foundDateIndex] = getEmptyDate(foundDate);
+            if (foundDate.date.getDay() === 5) {
+                calendarDates[foundDateIndex + 1] = getEmptyDate(calendarDates[foundDateIndex + 1]);
+                calendarDates[foundDateIndex + 2] = getEmptyDate(calendarDates[foundDateIndex + 2]);
+            }
+            if (foundDate.date.getDay() === 1) {
+                calendarDates[foundDateIndex - 1] = getEmptyDate(calendarDates[foundDateIndex - 1]);
+                calendarDates[foundDateIndex - 2] = getEmptyDate(calendarDates[foundDateIndex - 2]);
+            }
+            // console.log(performance.now() - t0);
+            return;
     }
 };
