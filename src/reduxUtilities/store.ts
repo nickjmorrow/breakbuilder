@@ -12,8 +12,8 @@ const configureStore = (initialState: AppState | null) => {
     // In development, use the browser's Redux dev tools extension if installed
     const enhancers = [];
     const isDevelopment = process.env.NODE_ENV === 'development';
-    if (isDevelopment && typeof window !== 'undefined' && (window as any).__REDUX_DEVTOOLS_EXTENSION__) {
-        enhancers.push((window as any).__REDUX_DEVTOOLS_EXTENSION__());
+    if (isDevelopment && typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__) {
+        enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__());
     }
 
     const intermediateStore = createStore(
@@ -27,12 +27,12 @@ const configureStore = (initialState: AppState | null) => {
 
 const calendarState = localStorageManager.getState();
 
-const initialState = calendarState !== null ? { ui: calendarState } : null;
+const initialState = calendarState !== null ? { calendar: calendarState } : null;
 
 const store = configureStore(initialState);
 
 store.subscribe(() => {
-    const state = store.getState().ui;
+    const state = store.getState().calendar;
     localStorageManager.setState(state);
 });
 

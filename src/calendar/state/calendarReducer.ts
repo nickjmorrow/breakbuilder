@@ -74,11 +74,6 @@ export const calendarReducer = (
                     draftState.calendarDates = [...draftState.calendarDates, ...getCalendarDatesForYear(nextYear)];
                 }
             });
-        case CalendarActionKeys.SET_YEAR:
-            return produce(state, draftState => {
-                draftState.currentYear = action.payload;
-                draftState.calendarDates = getUpdatedConnectedDates(getCalendarDatesForYear(action.payload));
-            });
         default:
             return state;
     }
@@ -94,14 +89,12 @@ const updateConnectedDates = (
         case 'empty':
             calendarDates[foundDateIndex] =
                 target === 'selected' ? getSelectedDate(foundDate) : getHolidayDate(foundDate);
-            if (foundDateIndex < 2 || foundDateIndex > calendarDates.length - 2) {
-                return;
-            }
-            if (foundDate.date.getDay() === 5) {
+
+            if (foundDate.date.getDay() === 5 && foundDateIndex < calendarDates.length - 2) {
                 calendarDates[foundDateIndex + 1] = getConnectedDate(calendarDates[foundDateIndex + 1]);
                 calendarDates[foundDateIndex + 2] = getConnectedDate(calendarDates[foundDateIndex + 2]);
             }
-            if (foundDate.date.getDay() === 1) {
+            if (foundDate.date.getDay() === 1 && foundDateIndex >= 2) {
                 calendarDates[foundDateIndex - 1] = getConnectedDate(calendarDates[foundDateIndex - 1]);
                 calendarDates[foundDateIndex - 2] = getConnectedDate(calendarDates[foundDateIndex - 2]);
             }
@@ -109,11 +102,19 @@ const updateConnectedDates = (
         case 'selected':
         case 'holiday':
             calendarDates[foundDateIndex] = getEmptyDate(foundDate);
-            if (foundDate.date.getDay() === 5 && isEmptyDate(calendarDates[foundDateIndex + 3])) {
+            if (
+                foundDate.date.getDay() === 5 &&
+                isEmptyDate(calendarDates[foundDateIndex + 3]) &&
+                foundDateIndex < calendarDates.length - 2
+            ) {
                 calendarDates[foundDateIndex + 1] = getEmptyDate(calendarDates[foundDateIndex + 1]);
                 calendarDates[foundDateIndex + 2] = getEmptyDate(calendarDates[foundDateIndex + 2]);
             }
-            if (foundDate.date.getDay() === 1 && isEmptyDate(calendarDates[foundDateIndex - 3])) {
+            if (
+                foundDate.date.getDay() === 1 &&
+                isEmptyDate(calendarDates[foundDateIndex - 3]) &&
+                foundDateIndex >= 2
+            ) {
                 calendarDates[foundDateIndex - 1] = getEmptyDate(calendarDates[foundDateIndex - 1]);
                 calendarDates[foundDateIndex - 2] = getEmptyDate(calendarDates[foundDateIndex - 2]);
             }
