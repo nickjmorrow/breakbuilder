@@ -50,7 +50,7 @@ export const calendarReducer = (
                 if (month === 12) {
                     draftState.currentMonth = 0;
                     draftState.currentYear += 1;
-                } else if (currentMonth === -1) {
+                } else if (month === -1) {
                     draftState.currentMonth = 11;
                     draftState.currentYear -= 1;
                 } else {
@@ -109,15 +109,14 @@ const updateConnectedDates = (
         case 'selected':
         case 'holiday':
             calendarDates[foundDateIndex] = getEmptyDate(foundDate);
-            if (foundDate.date.getDay() === 5) {
+            if (foundDate.date.getDay() === 5 && isEmptyDate(calendarDates[foundDateIndex + 3])) {
                 calendarDates[foundDateIndex + 1] = getEmptyDate(calendarDates[foundDateIndex + 1]);
                 calendarDates[foundDateIndex + 2] = getEmptyDate(calendarDates[foundDateIndex + 2]);
             }
-            if (foundDate.date.getDay() === 1) {
+            if (foundDate.date.getDay() === 1 && isEmptyDate(calendarDates[foundDateIndex - 3])) {
                 calendarDates[foundDateIndex - 1] = getEmptyDate(calendarDates[foundDateIndex - 1]);
                 calendarDates[foundDateIndex - 2] = getEmptyDate(calendarDates[foundDateIndex - 2]);
             }
-            // console.log(performance.now() - t0);
             return;
     }
 };

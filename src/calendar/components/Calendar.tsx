@@ -40,7 +40,10 @@ export const Calendar: React.FC = () => {
                     onClick={() => setMonth(currentMonth - 1)}
                     style={{ cursor: 'pointer', transform: 'rotate(-90deg)' }}
                 />
-                <Typography colorVariant={'primaryLight'}>{MONTH_NAMES[currentMonth]}</Typography>
+                <MonthYearContainer>
+                    <Year colorVariant={'primaryLight'}>{currentYear}</Year>
+                    <Typography colorVariant={'primaryLight'}>{MONTH_NAMES[currentMonth]}</Typography>
+                </MonthYearContainer>
                 <ChevronUpIcon
                     style={{ cursor: 'pointer', transform: 'rotate(90deg)' }}
                     onClick={() => setMonth(currentMonth + 1)}
@@ -147,4 +150,17 @@ const InnerCalendar = styled('div')`
     grid-template-columns: repeat(7, 1fr);
     width: min-content;
     height: 360px;
+`;
+
+const MonthYearContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
+const Year = styled(Typography)`
+    font-size: ${p => p.theme.fontSizes.fs2};
+    margin-bottom: ${p => p.theme.spacing.ss1};
+    color: hsla(0, 0%, 100%, 0.7);
 `;

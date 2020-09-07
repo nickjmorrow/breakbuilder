@@ -1,19 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/reduxUtilities/rootReducer';
-import { isSelectedDate } from '~/calendar/typeGuards/isSelectedDate';
-import { isConnectedDate } from '~/calendar/typeGuards/isConnectedDate';
-import { Typography } from '~/core/Typography';
-import { isHolidayDate } from '~/calendar/typeGuards/isHolidayDate';
 import styled from 'styled-components';
-import { SelectedDate } from '~/calendar/types/SelectedDate';
+import { calendarSelectors } from '~/calendar/state/calendarSelectors';
 import { ConnectedDate } from '~/calendar/types/ConnectedDate';
 import { HolidayDate } from '~/calendar/types/HolidayDate';
+import { SelectedDate } from '~/calendar/types/SelectedDate';
+import { Typography } from '~/core/Typography';
+import { useTypedSelector } from '~/reduxUtilities/useTypedSelector';
 
 export const DateTypeComparison: React.FC = () => {
-    const selectedDates = useSelector((state: RootState) => state.ui.calendarDates.filter(isSelectedDate));
-    const connectedDates = useSelector((state: RootState) => state.ui.calendarDates.filter(isConnectedDate));
-    const holidayDates = useSelector((state: RootState) => state.ui.calendarDates.filter(isHolidayDate));
+    const selectedDates = useTypedSelector(calendarSelectors.currentYearSelectedDates);
+    const connectedDates = useTypedSelector(calendarSelectors.currentYearConnectedDates);
+    const holidayDates = useTypedSelector(calendarSelectors.currentYearHolidayDates);
 
     const data = [
         { label: 'Selected', dates: selectedDates },
@@ -24,14 +21,14 @@ export const DateTypeComparison: React.FC = () => {
     return (
         <BallContainer>
             {data.map(d => (
-                <div key={d.label}>
+                <LabelBallContainer key={d.label}>
                     <Typography colorVariant={'primaryLight'}>{d.label}</Typography>
                     <Ball backgroundColor={getBackgroundColor(d, data)}>
                         <TextWrapper>
                             <Typography colorVariant={'primaryLight'}>{d.dates.length}</Typography>
                         </TextWrapper>
                     </Ball>
-                </div>
+                </LabelBallContainer>
             ))}
         </BallContainer>
     );
@@ -75,4 +72,10 @@ const BallContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+`;
+
+const LabelBallContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
