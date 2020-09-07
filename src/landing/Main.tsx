@@ -1,6 +1,7 @@
 import React from 'react';
 import { DateSelection } from '~/calendar/components/DateSelection';
 import styled, { keyframes } from 'styled-components';
+import { GithubIcon } from '@nickjmorrow/react-component-library';
 
 export const Main: React.FC = () => {
     return (
@@ -17,6 +18,12 @@ export const Main: React.FC = () => {
             >
                 <DateSelection />
             </div>
+            <a href="https://github.com/nickjmorrow/breakbuilder" target="_blank" rel="noopener noreferrer">
+                <GithubIcon
+                    style={{ position: 'absolute', bottom: '10px', right: '10px' }}
+                    colorVariant={'secondaryLight'}
+                />
+            </a>
         </Wrapper>
     );
 };

@@ -38,7 +38,7 @@ const CalendarEntryInternal: React.FC<{
             }}
         >
             <HolidaySection
-                isHovering={isHovering}
+                isHovering={isHovering && !isConnectedDate(calendarDate)}
                 onClick={e => {
                     e.stopPropagation();
                     if (isConnectedDate(calendarDate)) {
@@ -109,7 +109,7 @@ const lightness = 70.9;
 
 const getBackgroundColor = (uiState: InteractionState, calendarDate: CalendarDate, theme: Theme) => {
     if (isConnectedDate(calendarDate)) {
-        return `hsla(254.2, 90%, ${lightness}%, 0.5)`;
+        return `hsla(254.2, 90%, ${lightness}%, 0.4)`;
     }
     if (isHolidayDate(calendarDate)) {
         return `hsla(200, 74.2%, ${lightness}%, 0.9)`;

@@ -5,6 +5,7 @@ import { CalendarDate } from '~/calendar/types/CalendarDate';
 import { isVacationDate } from '~/calendar/typeGuards/isVacationDate';
 import { RootState } from '~/reduxUtilities/rootReducer';
 import styled from 'styled-components';
+import { calendarSelectors } from '~/calendar/state/calendarSelectors';
 
 type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -24,7 +25,7 @@ type Season = 'Spring' | 'Summer' | 'Fall' | 'Winter';
 
 export const SeasonalWeighting: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
     const seasons: Season[] = ['Spring', 'Summer', 'Fall', 'Winter'];
-    const calendarDates = useSelector((state: RootState) => state.ui.calendarDates);
+    const calendarDates = useSelector(calendarSelectors.currentYearDatesSelector);
     const seasonInfos = seasons.map(s => ({ label: s, numDatesInSeason: getNumDatesInSeason(calendarDates, s) }));
     const maxDates = seasonInfos.reduce((agg, cur) => Math.max(cur.numDatesInSeason, agg), 0);
 
